@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>This my index page. If you want to go to testpage, visit  <a href="TestServlet"> This </a></div>
+        <br><br>
+        <div> 
+            <form action="TestServlet" method="GET"> <!-- Where to send inputed data -->
+                <fieldset>                                  <!-- Group you form  and add legend-->
+                    <legend>Enter you Value<legend>
+            <input type="text" name="textInput" value="defaultValue"/> <!-- name - variable name of parameter -->
+            <input type="submit" name="submitname" value="Submit"  />
+            </form>
+        </div>
+    </body>
+</html>
