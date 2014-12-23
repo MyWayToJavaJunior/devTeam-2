@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package vsashyn.dt.servlet;
+package vsashyn.dt.controller;
 
+import vsashyn.dt.model.Project;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -12,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import vsashyn.dt.u.*;
 import vsashyn.dt.dao.*;
 
 /**

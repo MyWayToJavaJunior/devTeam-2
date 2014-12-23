@@ -6,7 +6,7 @@
 package vsashyn.dt.dao;
 
 import java.util.List;
-import vsashyn.dt.u.Developer;
+import vsashyn.dt.model.Developer;
 
 
 /**

@@ -5,7 +5,7 @@
  */
 package vsashyn.dt.dao;
 import java.sql.SQLException;
-import vsashyn.dt.u.Project;
+import vsashyn.dt.model.Project;
 /**
  *
  * @author vsa
