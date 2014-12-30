@@ -4,13 +4,51 @@
         <servlet-name>TestServlet</servlet-name>
         <servlet-class>vsashyn.dt.controller.TestServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Controller</servlet-name>
+        <servlet-class>vsashyn.dt.controller.Controller</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestServlet</servlet-name>
         <url-pattern>/TestServlet</url-pattern>
+    </servlet-mapping>
+  
+    <servlet>
+        <servlet-name>Index</servlet-name>
+        <jsp-file>/WEB-INF/jsp/index.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Index</servlet-name>
+        <url-pattern>/index</url-pattern>
+    </servlet-mapping>
+      
+      <servlet>
+        <servlet-name>SuccessfulLogin</servlet-name>
+        <jsp-file>/WEB-INF/jsp/successfullogin.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SuccessfulLogin</servlet-name>
+        <url-pattern>/successfullogin</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>faillogin</servlet-name>
+        <jsp-file>/WEB-INF/jsp/faillogin.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>faillogin</servlet-name>
+        <url-pattern>/faillogin</url-pattern>
+    </servlet-mapping>
+          
+    <servlet-mapping>
+        <servlet-name>Controller</servlet-name>
+        <url-pattern>/Controller</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-</web-app>
+
+    
+    </web-app>

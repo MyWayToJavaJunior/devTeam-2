@@ -9,26 +9,18 @@ package vsashyn.dt.model;
  *
  * @author vsa
  */
-public class Project {
-    
-    int id;
-    int idSpecification;
+public class Customer {
+    Integer id;
     String name;
+    String email;
+    String password;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getIdSpecification() {
-        return idSpecification;
-    }
-
-    public void setIdSpecification(int idSpecification) {
-        this.idSpecification = idSpecification;
     }
 
     public String getName() {
@@ -38,6 +30,21 @@ public class Project {
     public void setName(String name) {
         this.name = name;
     }
-    
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
 }

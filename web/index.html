@@ -11,15 +11,30 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>This my index page. If you want to go to testpage, visit  <a href="TestServlet"> This </a></div>
+        <div>This my index page. If you want to go to test servlet, visit  <a href="TestServlet"> This </a></div>
         <br><br>
+
+        You can login as customer.
         <div> 
-            <form action="TestServlet" method="GET"> <!-- Where to send inputed data -->
+            <form action="Controller" method="POST"> <!-- Where to send inputed data -->
                 <fieldset>                                  <!-- Group you form  and add legend-->
-                    <legend>Enter you Value<legend>
-            <input type="text" name="textInput" value="defaultValue"/> <!-- name - variable name of parameter -->
-            <input type="submit" name="submitname" value="Submit"  />
+                    <legend>Enter you Value</legend>
+                    <input type="text" name="login" /> <!-- name - variable name of parameter -->
+                    <input type="text" name="password" /> 
+                    <input type="submit" name="isCustomer" value="Submit"  />
             </form>
         </div>
+        <br>
+
+
+        Or you can connect as employer.
+        <form action="Controller" method="POST"> <!-- Where to send inputed data -->
+            <fieldset>                                  <!-- Group you form  and add legend-->
+                <legend>Enter you Value</legend>
+                <input type="text" name="login" /> <!-- name - variable name of parameter -->
+                <input type="text" name="password" />
+                <input type="submit" name="isStaff" value="Submit"  />
+        </form>
+
     </body>
 </html>

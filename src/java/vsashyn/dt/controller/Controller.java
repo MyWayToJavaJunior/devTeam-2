@@ -5,21 +5,21 @@
  */
 package vsashyn.dt.controller;
 
-import vsashyn.dt.model.Project;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import vsashyn.dt.dao.*;
+import javax.servlet.http.HttpSession;
+import vsashyn.dt.command.Command;
+import vsashyn.dt.command.CommandFactory;
 
 /**
  *
  * @author vsa
  */
-public class TestServlet extends HttpServlet {
+public class Controller extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,20 +38,10 @@ public class TestServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet TestServlet</title>");            
+            out.println("<title>Servlet Controller</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
-            DaoFactory daoFactory = new DaoFactory();
-            Project result=null;
-            try{
-                ProjectDao projectDao = new MySqlProjectDao(daoFactory.getConnection());
-                result = projectDao.read(1);
-            } catch(SQLException ex) {
-                System.err.println("SqlException");
-                ex.printStackTrace();
-            }
-            out.println("<h1>" + result.getId() + " " + result.getName() + " " + result.getIdSpecification() + "</h1>");
+            out.println("<h1>Servlet Controller at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -69,11 +59,15 @@ public class TestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        
+        //Make redirect on index page if session!=true
+        if(request.getRequestURI()=="/index.html"){
+            
+        }        
+        HttpSession hs = request.getSession(true);
+        response.sendRedirect("");
     }
 
-    /**пл
+    /**
      * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
@@ -84,7 +78,14 @@ public class TestServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+                response.setContentType("text/html;charset=UTF-8");
+                
+        if(request.getRequestURI().equals("/index.html")){
+            HttpSession hs = request.getSession(true);
+        }        
+        Command command = CommandFactory.createCommand(request);
+        command.execute(request, response);
+        
     }
 
     /**

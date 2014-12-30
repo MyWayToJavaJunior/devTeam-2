@@ -11,20 +11,47 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
  * @author vsa
  */
 public class CommandFactory {
-    Map<String, Command> commands = new HashMap<>(); 
+    
+    private static Map<String, Command> commands = new HashMap<>(); 
+    
     static{
-     //   commands.put("find", );
+        commands.put("authCustomer", new AuthCustomerCommand());
+        commands.put("authStaff", new AuthStaffCommand());
     }
     
     public CommandFactory() throws IOException{
         Properties props = new Properties();
         props.load(new FileInputStream(
                 new File("config/commands.properties")));
+        
+    }
+    public static Command createCommand(HttpServletRequest request){
+        
+        String isStaff      =   request.getParameter("isStaff");
+        String isCustomer   =   request.getParameter("isCustomer");
+        String login        =   request.getParameter("login");
+        String password     =   request.getParameter("password");
+        
+        
+        if(isStaff!=null){
+            if((login!=null)&&(password!=null)){
+                    return commands.get("authStaff");
+        }
+        }
+        
+        if(isCustomer!=null){
+            if((login!=null)&&(password!=null)){
+                return commands.get("authCustomer");  
+            }
+        }
+        
+        return null;
     }
 }
