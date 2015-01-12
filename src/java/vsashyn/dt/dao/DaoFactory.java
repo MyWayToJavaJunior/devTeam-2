@@ -21,13 +21,7 @@ import javax.sql.DataSource;
 public class DaoFactory {
     
     private static DataSource dataSource;
-    
-//    private String user = "dt";
-//    private String pass = "dtDT123321";
-//    private String url = "jdbc:mysql://localhost:3306/devTeam";
-//    private String driver = "com.mysql.jdbc.Driver";
-//    
-    public DaoFactory() {
+    static {
         try {
             // Class.forName(driver);
             InitialContext context = new InitialContext();
@@ -36,27 +30,18 @@ public class DaoFactory {
         } catch (NamingException ex) {
         }
     }
+//    private String user = "dt";
+//    private String pass = "dtDT123321";
+//    private String url = "jdbc:mysql://localhost:3306/devTeam";
+//    private String driver = "com.mysql.jdbc.Driver";
+//    
     
-    public StaffDao getStaffDao(){
-        return new StaffDao(getConnection());
+    public StaffDao getStaffDao() throws SQLException{
+            return new StaffDao(dataSource.getConnection());
     }
     
-    public CustomerDao getCustomerDao(){
-        return new CustomerDao(getConnection());
-    }
-
-    public   Connection getConnection() {
-        Connection conn = null;
-        try {
-            conn = dataSource.getConnection();
-        } catch (SQLException ex) {
-        }
-        return conn;
-    }
-
-    public DeveloperDao getDeveloperDao(Connection connection) {
-    //    return new MySqlDeveloperDao();
-        return null;
+    public CustomerDao getCustomerDao() throws SQLException{
+        return new CustomerDao(dataSource.getConnection());
     }
 
     public ProjectDao getProjectDao(Connection connection) {

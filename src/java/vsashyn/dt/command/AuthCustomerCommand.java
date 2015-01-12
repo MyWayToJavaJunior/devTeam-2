@@ -6,6 +6,7 @@
 package vsashyn.dt.command;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,12 @@ class AuthCustomerCommand implements Command {
         customer.setPassword(password);
         
         DaoFactory df = new DaoFactory();
-        CustomerDao customerDao = df.getCustomerDao();
+        CustomerDao customerDao = null;
+        try {
+            customerDao = df.getCustomerDao();
+        } catch (SQLException ex) {
+            Logger.getLogger(AuthCustomerCommand.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         if(customerDao.isMember(customer)){
             try {

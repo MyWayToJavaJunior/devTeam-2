@@ -17,6 +17,9 @@ public class Staff {
     String email;
     String password;
     boolean isFree  =  true;
+    
+    public Staff(){
+    }
 
     public Integer getId() {
         return id;

@@ -64,7 +64,7 @@ public class StaffDao {
         }
         try{
             if(rs.next()){
-             worker.setId(rs.getInt("id_person"));
+             worker.setId(rs.getInt("idPerson"));
              worker.setName(rs.getString("name"));
              worker.setSurname(rs.getString("surname"));
              worker.setIdQualification(rs.getInt("qualification_id"));
@@ -98,7 +98,7 @@ public class StaffDao {
     
     public Integer getWorkerID(String email){
         PreparedStatement ps = null;
-        String sqlQuery = "SELECT S.id_person FROM Staff as S, Staff_auth as Sa WHERE S.id_person=Sa.staff_id and Sa.email=?";
+        String sqlQuery = "SELECT S.idPerson FROM Staff as S, Staff_auth as Sa WHERE S.idPerson=Sa.staff_id and Sa.email=?";
         ResultSet rs=null;
         Integer result=-1;
         try{

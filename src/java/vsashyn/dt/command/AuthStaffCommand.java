@@ -7,6 +7,7 @@ package vsashyn.dt.command;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -36,14 +37,19 @@ class AuthStaffCommand implements Command {
         worker.setPassword(password);
         
         DaoFactory df = new DaoFactory();
-        StaffDao staffDao = df.getStaffDao();
+        StaffDao staffDao = null;
+        try {
+            staffDao = df.getStaffDao();
+        } catch (SQLException ex) {
+            Logger.getLogger(AuthStaffCommand.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         if(staffDao.isMember(worker)){
             //try {
                 //Определить кто он: менеджер или девелопер
                 HttpSession session = request.getSession();
-                session.setAttribute("worker", staffDao.getStaffEntry(email));
-                session.setAttribute("id", staffDao.getWorkerID(email));
+                session.setAttribute("worker", staffDao.getStaffEntry(worker.getEmail()));
+                session.setAttribute("id", staffDao.getWorkerID(worker.getEmail()));
 //                String qualTitle = staffDao.getQualificationTitle(worker);
 //                session.setAttribute("qa", qualTitle);
 //                PrintWriter pw = null;
