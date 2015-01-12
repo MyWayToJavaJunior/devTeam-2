@@ -48,13 +48,13 @@ public class StaffDao {
     /**
      * 
      * @param email
-     * @return 
+     * @return null, if we cannot execute query
      */
     public Staff getStaffEntry(String email){
         Staff worker = new Staff();
         PreparedStatement ps = null;
-        String sqlQuery = "SELECT S.id_person, S.name, S.surname, S.qualification_id, S.isFree "
-                + "FROM Staff as S, Staff_auth as Sa WHERE S.id_person = Sa.staff_id  and Sa.email=?";
+        String sqlQuery = "SELECT S.idPerson, S.name, S.surname, S.qualification_id, S.isFree "
+                + "FROM Staff as S, Staff_auth as Sa WHERE S.idPerson = Sa.staff_id  and Sa.email=?";
         ResultSet rs = null;
         try{
             ps=connection.prepareStatement(sqlQuery);
@@ -78,7 +78,7 @@ public class StaffDao {
     public String getQualificationTitle(Staff worker){
         
         PreparedStatement ps = null;
-        String sqlQuery = "SELECT Q.title FROM  Qualification as Q, Staff as S  WHERE S.qualification_id=Q.idQualification AND S.id_person=?";
+        String sqlQuery = "SELECT Q.title FROM  Qualification as Q, Staff as S  WHERE S.qualification_id=Q.idQualification AND S.idPerson=?";
         ResultSet rs = null;
         try {
             ps=connection.prepareStatement(sqlQuery);

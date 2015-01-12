@@ -4,9 +4,9 @@ FLUSH PRIVILEGES;
 
 use devTeam;
 
-
-TRUNCATE Qualification;
-TRUNCATE Staff;
+#DELETE FROM Qualification;
+#TRUNCATE Qualification;
+#TRUNCATE Staff;
 
 INSERT INTO Qualification(title) VALUES ("Junior Java Developer");
 INSERT INTO Qualification(title) VALUES ("Middle Java Developer");
@@ -15,7 +15,7 @@ INSERT INTO Qualification(title) VALUES ("Manager");
 #select * from Qualification;
 
 
-INSERT INTO  Staff(name, surname, qualification_id, isFree) VALUES ("Vitalii", "Sashyn", 1, "true");
+INSERT INTO  Staff(name, surname, qualification_id, isFree) VALUES ("Vitalii", "Sashyn", 1, 1);
 INSERT INTO  Staff(name, surname, qualification_id, isFree) VALUES ("Alex", "Natalenko", 2, "true");
 INSERT INTO  Staff(name, surname, qualification_id, isFree) VALUES ("Eugen", "Ostroukhov", 1, "true");
 INSERT INTO  Staff(name, surname, qualification_id, isFree) VALUES ("Колисниченко", "Максим", 1, "false");

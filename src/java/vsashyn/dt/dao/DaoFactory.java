@@ -10,22 +10,30 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 /**
  *
  * @author vsa
  */
 public class DaoFactory {
     
-    private String user = "dt";
-    private String pass = "dtDT123321";
-    private String url = "jdbc:mysql://localhost:3306/devTeam";
-    private String driver = "com.mysql.jdbc.Driver";
+    private static DataSource dataSource;
     
+//    private String user = "dt";
+//    private String pass = "dtDT123321";
+//    private String url = "jdbc:mysql://localhost:3306/devTeam";
+//    private String driver = "com.mysql.jdbc.Driver";
+//    
     public DaoFactory() {
         try {
-            Class.forName(driver);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DaoFactory.class.getName()).log(Level.SEVERE, null, ex);
+            // Class.forName(driver);
+            InitialContext context = new InitialContext();
+            dataSource = (DataSource)context.lookup("java:comp/env/jdbc/devTeam");
+            
+        } catch (NamingException ex) {
         }
     }
     
@@ -38,11 +46,12 @@ public class DaoFactory {
     }
 
     public   Connection getConnection() {
+        Connection conn = null;
         try {
-            return DriverManager.getConnection(url, user, pass);
+            conn = dataSource.getConnection();
         } catch (SQLException ex) {
         }
-        return null;
+        return conn;
     }
 
     public DeveloperDao getDeveloperDao(Connection connection) {
