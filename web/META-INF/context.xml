@@ -7,8 +7,8 @@
         maxActive="32"
         maxIdle="8"
         maxWait="10000"
-        username="root"
-        password="sash12345"
+        username="dt"
+        password="dtDT123321"
         driverClassName="com.mysql.jdbc.Driver"
         url="jdbc:mysql://localhost:3306/devTeam"
         />

@@ -23,12 +23,12 @@
     </servlet-mapping>
       
       <servlet>
-        <servlet-name>SuccessfulLogin</servlet-name>
-        <jsp-file>/WEB-INF/jsp/successfullogin.jsp</jsp-file>
+        <servlet-name>Dashboard</servlet-name>
+        <jsp-file>/WEB-INF/jsp/dashboard.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
-        <servlet-name>SuccessfulLogin</servlet-name>
-        <url-pattern>/successfullogin</url-pattern>
+        <servlet-name>Dashboard</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
     </servlet-mapping>
     
     <servlet>

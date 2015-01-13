@@ -24,18 +24,20 @@ public class CommandFactory {
     static{
         commands.put("authCustomer", new AuthCustomerCommand());
         commands.put("authStaff", new AuthStaffCommand());
+        commands.put("addElapsedTime", new AddElapsedTimeCommand());
     }
     
     public CommandFactory() throws IOException{
         Properties props = new Properties();
         props.load(new FileInputStream(
                 new File("config/commands.properties")));
-        
     }
+    
     public static Command createCommand(HttpServletRequest request){
         
         String isStaff      =   request.getParameter("isStaff");
         String isCustomer   =   request.getParameter("isCustomer");
+        String changeTime   =   request.getParameter("changeTime");
         String login        =   request.getParameter("login");
         String password     =   request.getParameter("password");
         
@@ -51,7 +53,9 @@ public class CommandFactory {
                 return commands.get("authCustomer");  
             }
         }
-        
+        if(changeTime!=null){
+            return commands.get("addElapsedTime");
+        }
         return null;
     }
 }

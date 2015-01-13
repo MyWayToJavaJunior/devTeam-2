@@ -44,8 +44,13 @@ public class DaoFactory {
         return new CustomerDao(dataSource.getConnection());
     }
 
-    public ProjectDao getProjectDao(Connection connection) {
-        return new ProjectDao(connection);
+    public ProjectDao getProjectDao() throws SQLException {
+        return new ProjectDao(dataSource.getConnection());
     }
-    
+    public ElapsedTimeDao getElapsedTimeDao() throws SQLException{
+        return new ElapsedTimeDao(dataSource.getConnection());
+    }
+    public ProjectStaffDao getProjectStaffDao() throws SQLException{
+        return new ProjectStaffDao(dataSource.getConnection());
+    }
 }
