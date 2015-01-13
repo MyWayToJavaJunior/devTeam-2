@@ -48,18 +48,9 @@ class AuthStaffCommand implements Command {
             //try {
                 //Определить кто он: менеджер или девелопер
                 HttpSession session = request.getSession();
-                session.setAttribute("worker", staffDao.getStaffEntry(worker.getEmail()));
-                session.setAttribute("id", staffDao.getWorkerID(worker.getEmail()));
-//                String qualTitle = staffDao.getQualificationTitle(worker);
-//                session.setAttribute("qa", qualTitle);
-//                PrintWriter pw = null;
-//            try {
-//                pw = response.getWriter();
-//            } catch (IOException ex) {
-//                Logger.getLogger(AuthStaffCommand.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//                pw.append(staffDao.getWorkerID(login).toString());
-//                pw.append(staffDao.getQualificationTitle(worker));
+                worker = staffDao.getStaffEntry(worker);
+                session.setAttribute("worker", worker);
+                session.setAttribute("involvedProjects", staffDao.getProjects(worker));
                 session.setAttribute("role", staffDao.getQualificationTitle(worker));
                 try{
                 RequestDispatcher rd = request.getRequestDispatcher("successfullogin");

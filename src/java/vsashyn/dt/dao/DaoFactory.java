@@ -45,7 +45,7 @@ public class DaoFactory {
     }
 
     public ProjectDao getProjectDao(Connection connection) {
-        return new MySqlProjectDao(connection);
+        return new ProjectDao(connection);
     }
     
 }

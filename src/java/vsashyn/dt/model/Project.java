@@ -5,15 +5,37 @@
  */
 package vsashyn.dt.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author vsa
  */
-public class Project {
+public class Project implements Serializable {
     
     int id;
+    String title;
     int idSpecification;
-    String name;
+    int bill;
+
+    public Project (){
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getBill() {
+        return bill;
+    }
+
+    public void setBill(int bill) {
+        this.bill = bill;
+    }
 
     public int getId() {
         return id;
@@ -31,13 +53,5 @@ public class Project {
         this.idSpecification = idSpecification;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    
+  
 }
