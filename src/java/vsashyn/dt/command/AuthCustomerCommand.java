@@ -25,7 +25,7 @@ class AuthCustomerCommand implements Command {
     }
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         
@@ -42,15 +42,9 @@ class AuthCustomerCommand implements Command {
         }
         
         if(customerDao.isMember(customer)){
-            try {
-                response.sendRedirect("successfullogin");
-            } catch (IOException ex) {
-            }
+           return "successfullogin";
         } else {
-            try {
-                response.sendRedirect("faillogin");
-            } catch (IOException ex) {
-            }
+            return "faillogin";
         }
         
     }

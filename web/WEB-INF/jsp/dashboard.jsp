@@ -15,14 +15,16 @@
         <h1>Welcome to dashboard!</h1>
 
         <%-- Unauthorized persons are redirecting to login page  --%>
-        <c:if test="${ empty worker }" var="hasSession" scope="session">
-            <c:redirect url="index.html"/>
+        <c:if test="${ empty worker }" var="unauthorized" scope="session">
+            <c:redirect url="index"/>
         </c:if>
 
 
         <p>
             Welcome, ${worker.name} !
+            <br>
             Role :   ${role}
+            <br>
             Worker id: ${worker.id}
         </p>
 
@@ -31,7 +33,7 @@
         <jsp:getProperty name="worker" property="name"/>
         <jsp:getProperty name="worker" property="surname"/>
         --%>
-
+        
         <p>
             Projects in which you are involved:
             <c:forEach var="elem" items="${projectsTimes}" varStatus="status">
@@ -43,15 +45,16 @@
 
         <p>
             Please, add elapsed time to project :
-            <select name="witchProject" form="elapsedTime">
+            <select name="witchProject" form="elapsedTimes">
                 <c:forEach var="elem" items="${projectsTimes}" varStatus="status">
                     <option value="${elem.key.id}">
                         Title: ${elem.key.title} 
                     </option>
                 </c:forEach>
-            </select>
+            </select> 
             in minutes :
-        <form id="elapsedTime" action="Controller" method="POST">
+        <form id="elapsedTimes" action="controller/addtime" method="POST">
+            <input type="hidden" name="command" value="addElapsedTime"/>
             <input type="text" name="elapsedTime"/>
             <input type="submit" name="changeTime" value ="Submit"/>
         </form>

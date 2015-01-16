@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    <servlet>
-        <servlet-name>TestServlet</servlet-name>
-        <servlet-class>vsashyn.dt.controller.TestServlet</servlet-class>
-    </servlet>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    
+    
     <servlet>
         <servlet-name>Controller</servlet-name>
         <servlet-class>vsashyn.dt.controller.Controller</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>TestServlet</servlet-name>
-        <url-pattern>/TestServlet</url-pattern>
-    </servlet-mapping>
-  
+    
     <servlet>
         <servlet-name>Index</servlet-name>
         <jsp-file>/WEB-INF/jsp/index.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
-        <url-pattern>/index</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
       
       <servlet>
@@ -29,6 +26,24 @@
     <servlet-mapping>
         <servlet-name>Dashboard</servlet-name>
         <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>ErrorPage</servlet-name>
+        <jsp-file>/WEB-INF/jsp/error.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ErrorPage</servlet-name>
+        <url-pattern>/error</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>Successfull</servlet-name>
+        <jsp-file>/WEB-INF/jsp/successfull.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Successfull</servlet-name>
+        <url-pattern>/successfull</url-pattern>
     </servlet-mapping>
     
     <servlet>
@@ -42,7 +57,7 @@
           
     <servlet-mapping>
         <servlet-name>Controller</servlet-name>
-        <url-pattern>/Controller</url-pattern>
+        <url-pattern>/controller/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

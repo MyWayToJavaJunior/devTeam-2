@@ -25,6 +25,7 @@ public class CommandFactory {
         commands.put("authCustomer", new AuthCustomerCommand());
         commands.put("authStaff", new AuthStaffCommand());
         commands.put("addElapsedTime", new AddElapsedTimeCommand());
+        commands.put("showDashboard", new ShowDashboardCommand());
     }
     
     public CommandFactory() throws IOException{
@@ -40,21 +41,25 @@ public class CommandFactory {
         String changeTime   =   request.getParameter("changeTime");
         String login        =   request.getParameter("login");
         String password     =   request.getParameter("password");
+        String command      =   request.getParameter("command");
         
         
-        if(isStaff!=null){
+        if(command.equals("loginStaff")){
             if((login!=null)&&(password!=null)){
                     return commands.get("authStaff");
         }
         }
         
-        if(isCustomer!=null){
+        if(command.equals("loginCustomer")){
             if((login!=null)&&(password!=null)){
                 return commands.get("authCustomer");  
             }
         }
-        if(changeTime!=null){
+        if(command.equals("addElapsedTime")){
             return commands.get("addElapsedTime");
+        }
+        if(command.equals("showDashboard")){
+            return commands.get("showDashboard");
         }
         return null;
     }

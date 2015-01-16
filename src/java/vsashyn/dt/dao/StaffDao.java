@@ -28,6 +28,14 @@ public class StaffDao {
         this.connection = connection;
     }
     
+    public boolean closeConnection(){
+        try {
+            this.connection.close();
+        } catch (SQLException ex) {
+            throw null;
+        }
+        return true;
+    }
     public boolean isMember(Staff worker) {
         String email = worker.getEmail();
         String password = worker.getPassword();
@@ -117,6 +125,7 @@ public class StaffDao {
             ps.setInt(1, worker.getId());
             rs = ps.executeQuery();
         } catch (SQLException ex) {
+            throw null;
         }
         try {
             while (rs.next()) {
@@ -128,6 +137,7 @@ public class StaffDao {
                 resultProjects.add(project);
             }
         } catch (SQLException ex) {
+            throw null;
         }
         return resultProjects;
     }

@@ -24,7 +24,15 @@ public class ElapsedTimeDao {
     
     ElapsedTimeDao(Connection connection){
         this.connection = connection;
-    }        
+    }
+    public boolean closeConnection(){
+        try {
+            this.connection.close();
+        } catch (SQLException ex) {
+            throw null;
+        }
+        return true;
+    }
     //  addElapsedTime(Project, Worker)
     public boolean addElapsedTime(Project project, Staff worker, int time){
         DaoFactory daoFactory = new DaoFactory();
@@ -42,8 +50,10 @@ public class ElapsedTimeDao {
             ps=connection.prepareStatement(sqlQuery);
             ps.setInt(1, projectStaff.getId());
             ps.setInt(2, time);
-            return ps.execute();
+            ps.execute();
+            return true;
         } catch (SQLException ex){
+            System.err.println("SQL Exception" + ex);
         }
         return false;
     }
@@ -57,6 +67,7 @@ public class ElapsedTimeDao {
         try {
             projectStaffDao = daoFactory.getProjectStaffDao();
         } catch (SQLException ex) {
+            throw null;
         }
         ProjectStaff projectStaff = 
                 projectStaffDao.getProjectStaffEntry(worker, project);
@@ -69,12 +80,14 @@ public class ElapsedTimeDao {
             ps.setInt(1, projectStaff.getId());
             rs=ps.executeQuery();
         } catch (SQLException ex){
+            throw null;
         }
         try {
             if(rs.next()){
                 result=rs.getInt("SUM(time)");
             }
         } catch (SQLException ex) {
+            throw null;
         }
         return result;
     }

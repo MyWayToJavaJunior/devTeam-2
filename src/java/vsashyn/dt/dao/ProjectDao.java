@@ -18,6 +18,14 @@ public class ProjectDao {
         this.connection = connection;
     }
     
+    public boolean closeConnection(){
+        try {
+            this.connection.close();
+        } catch (SQLException ex) {
+            throw null;
+        }
+        return true;
+    }
     public Project getProjectEntry(Project project){
         PreparedStatement ps=null;
         String sqlQuery = "SELECT * FROM Project as P WHERE p.idProject=?;";

@@ -15,8 +15,9 @@ and open the template in the editor.
         <br><br>
 
         You can login as customer.
-        <div> 
+        <div>
             <form action="Controller" method="POST"> <!-- Where to send inputed data -->
+                <input type="hidden" name="command" value="loginCustomer" />
                 <fieldset>                                  <!-- Group you form  and add legend-->
                     <legend>Enter you Value</legend>
                     <input type="text" name="login" /> <!-- name - variable name of parameter -->
@@ -28,11 +29,13 @@ and open the template in the editor.
 
 
         Or you can connect as employer. Try using login: sashyn.v@gmail.com         pass: 12345
+        
         <form action="Controller" method="POST"> <!-- Where to send inputed data -->
+            <input type="hidden" name="command" value="loginStaff" />
             <fieldset>                                  <!-- Group you form  and add legend-->
                 <legend>Enter you Value</legend>
-                <input type="text" name="login" /> <!-- name - variable name of parameter -->
-                <input type="text" name="password" />
+                <input type="text" name="login" value="sashyn.v@gmail.com"/> <!-- name - variable name of parameter -->
+                <input type="text" name="password" value="12345" />
                 <input type="submit" name="isStaff" value="Submit"  />
         </form>
 

@@ -7,6 +7,7 @@ package vsashyn.dt.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,17 +34,21 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Controller</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Controller at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+                
+        if(request.getRequestURI().equals("/index.html")){
+            HttpSession hs = request.getSession(true);
+        }        
+        Command command = CommandFactory.createCommand(request);
+        String resultURL = command.execute(request, response);
+
+        if(!resultURL.equals("")){
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/" + resultURL);
+
+            dispatcher.forward(request, response);
+                                  //  if(true) throw null;
+
+        } else {
+            response.sendError(500);
         }
     }
 
@@ -59,14 +64,8 @@ public class Controller extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //Make redirect on index page if session!=true
-        if(request.getRequestURI()=="/index.html"){
-            
-        }        
-        HttpSession hs = request.getSession(true);
-        response.sendRedirect("");
+        processRequest(request, response);
     }
-
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -78,14 +77,7 @@ public class Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                response.setContentType("text/html;charset=UTF-8");
-                
-        if(request.getRequestURI().equals("/index.html")){
-            HttpSession hs = request.getSession(true);
-        }        
-        Command command = CommandFactory.createCommand(request);
-        command.execute(request, response);
-        
+        processRequest(request, response);
     }
 
     /**

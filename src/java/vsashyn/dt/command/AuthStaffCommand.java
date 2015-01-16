@@ -8,13 +8,6 @@ package vsashyn.dt.command;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -34,7 +27,9 @@ class AuthStaffCommand implements Command {
     }
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
+        
+        String resultURL = "error65433efttg";
         String email = request.getParameter("login");
         String password = request.getParameter("password");
         
@@ -42,14 +37,14 @@ class AuthStaffCommand implements Command {
         worker.setEmail(email);
         worker.setPassword(password);
         
-        DaoFactory df = new DaoFactory();
+        DaoFactory daoFactory = new DaoFactory();
         StaffDao staffDao = null;
         ElapsedTimeDao elapsedTimeDao = null;
         try {
-            staffDao = df.getStaffDao();
-            elapsedTimeDao= df.getElapsedTimeDao();
+            staffDao = daoFactory.getStaffDao();
+            elapsedTimeDao= daoFactory.getElapsedTimeDao();
         } catch (SQLException ex) {
-            Logger.getLogger(AuthStaffCommand.class.getName()).log(Level.SEVERE, null, ex);
+            throw null;
         }
         
         if(staffDao.isMember(worker)){
@@ -57,33 +52,26 @@ class AuthStaffCommand implements Command {
             HttpSession session = request.getSession();
             worker = staffDao.getStaffEntry(worker);
             session.setAttribute("worker", worker);
-            
-            Map<Project, Integer> projectsTimes = new HashMap();
-            List<Project> projects = staffDao.getProjects(worker);
-            for(Project project : projects){
-                projectsTimes.put(project, elapsedTimeDao.getTotalElapsedTime(worker, project));
-            }
-            
-            //session.setAttribute("involvedProjects", staffDao.getProjects(worker));
-            session.setAttribute("projectsTimes",projectsTimes);
             session.setAttribute("role", staffDao.getQualificationTitle(worker));
-            try{
-            RequestDispatcher rd = request.getRequestDispatcher("dashboard");
-            rd.forward(request, response);
-            } catch (ServletException ex){
-            } catch (IOException ex){
-            }
 
-        } else {
-            try {
-                RequestDispatcher rd = request.getRequestDispatcher("index.html");
-                PrintWriter pw  = response.getWriter();
-                pw.append("Please, error ");
-                rd.include(request, response);
-               // response.sendRedirect("faillogin");
-            } catch (IOException ex) {
-            } catch (ServletException ex){
-            }
+            //Run showDashboardCommand
+            
+            Command command = new ShowDashboardCommand();
+            resultURL = command.execute(request, response);
+//            session.setAttribute("command","showDashboard");
+//            RequestDispatcher dispatcher = request.getRequestDispatcher("Controller");
+//            try {
+//                dispatcher.forward(request, response);
+//            } catch (ServletException ex) {
+//            } catch (IOException ex) {
+//                Logger.getLogger(AuthStaffCommand.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//               
+            //if(true) throw null;
         }
-    }
+        staffDao.closeConnection();
+        elapsedTimeDao.closeConnection();
+        return resultURL;
+
+}
 }
