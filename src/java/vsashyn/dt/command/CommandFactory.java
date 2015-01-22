@@ -12,12 +12,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  *
  * @author vsa
  */
 public class CommandFactory {
+    
+    private static final Logger LOG = 
+            LogManager.getLogger(CommandFactory.class.getName());
     
     private static Map<String, Command> commands = new HashMap<>(); 
     

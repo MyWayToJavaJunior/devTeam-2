@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import vsashyn.dt.dao.CustomerDao;
-import vsashyn.dt.dao.DaoFactory;
+import vsashyn.dt.dao.DAOFactory;
 import vsashyn.dt.model.Customer;
 
 /**
@@ -33,13 +33,15 @@ class AuthCustomerCommand implements Command {
         customer.setEmail(login);
         customer.setPassword(password);
         
-        DaoFactory df = new DaoFactory();
+        DAOFactory df = new DAOFactory();
         CustomerDao customerDao = null;
-        try {
-            customerDao = df.getCustomerDao();
-        } catch (SQLException ex) {
-            Logger.getLogger(AuthCustomerCommand.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            customerDao = df.getCustomerDao();
+//        } catch (SQLException ex) {
+//            for(StackTraceElement stl :ex.getStackTrace()){
+//                System.err.println(stl);
+//            }
+//        }
         
         if(customerDao.isMember(customer)){
            return "successfullogin";

@@ -32,7 +32,7 @@ and open the template in the editor.
 
         Or you can connect as employer. Try using login: sashyn.v@gmail.com   pass: 12345
         
-        <form action="controller/auth" method="POST"> <!-- Where to send inputed data -->
+        <form action="controller/showdashboard" method="POST"> <!-- Where to send inputed data -->
             <input type="hidden" name="command" value="loginStaff" />
             <fieldset>                                  <!-- Group you form  and add legend-->
                 <legend>Enter you Value</legend>

@@ -9,8 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import vsashyn.dt.command.ShowDashboardCommand;
 import vsashyn.dt.model.Project;
 import vsashyn.dt.model.ProjectStaff;
 import vsashyn.dt.model.Staff;
@@ -20,27 +20,22 @@ import vsashyn.dt.model.Staff;
  * @author vsa
  */
 public class ElapsedTimeDao {
+    
+    private static final org.apache.logging.log4j.Logger LOG = 
+            LogManager.getLogger(ElapsedTimeDao.class.getName());
     Connection connection;
     
     ElapsedTimeDao(Connection connection){
         this.connection = connection;
     }
-    public boolean closeConnection(){
-        try {
-            this.connection.close();
-        } catch (SQLException ex) {
-            throw null;
-        }
-        return true;
-    }
-    //  addElapsedTime(Project, Worker)
+
     public boolean addElapsedTime(Project project, Staff worker, int time){
-        DaoFactory daoFactory = new DaoFactory();
-        ProjectStaffDao projectStaffDao=null;
-        try {
-            projectStaffDao = daoFactory.getProjectStaffDao();
-        } catch (SQLException ex) {
-        }
+        boolean result = false;
+        DAOFactory daoFactory = new DAOFactory();
+        daoFactory.beginConnectionScope();
+        LOG.info("begin Connection scope daoFactory");
+        ProjectStaffDAO projectStaffDao=daoFactory.getProjectStaffDao();
+
         ProjectStaff projectStaff = 
                 projectStaffDao.getProjectStaffEntry(worker, project);
         PreparedStatement ps = null;
@@ -51,24 +46,30 @@ public class ElapsedTimeDao {
             ps.setInt(1, projectStaff.getId());
             ps.setInt(2, time);
             ps.execute();
-            return true;
+            result = true;
         } catch (SQLException ex){
-            System.err.println("SQL Exception" + ex);
+            LOG.error(ex.getMessage());
+//        } finally {
+//            try {
+//                if(ps!=null)  ps.close();
+//            } catch (SQLException ex) {
+//                LOG.error(ex.getMessage());
+//            }
         }
-        return false;
+        daoFactory.endConnectionScope();
+        LOG.info("end Connection scope daoFactory");
+        return result;
     }
     
     
     //method getTotalElapsedTime(ProjectStaff)
     public int getTotalElapsedTime(Staff worker, Project project){
         int result = -1;
-        DaoFactory daoFactory = new DaoFactory();
-        ProjectStaffDao projectStaffDao=null;
-        try {
-            projectStaffDao = daoFactory.getProjectStaffDao();
-        } catch (SQLException ex) {
-            throw null;
-        }
+        DAOFactory daoFactory = new DAOFactory();
+        daoFactory.beginConnectionScope();
+        LOG.info("begin Connection scope daoFactory");
+        ProjectStaffDAO projectStaffDao=daoFactory.getProjectStaffDao();
+        
         ProjectStaff projectStaff = 
                 projectStaffDao.getProjectStaffEntry(worker, project);
         
@@ -80,15 +81,32 @@ public class ElapsedTimeDao {
             ps.setInt(1, projectStaff.getId());
             rs=ps.executeQuery();
         } catch (SQLException ex){
-            throw null;
+            LOG.error(ex.getMessage() + ". StackTrace : ");
+            for(StackTraceElement ste: ex.getStackTrace()){
+                LOG.debug(ste);
+            }
         }
         try {
             if(rs.next()){
                 result=rs.getInt("SUM(time)");
             }
         } catch (SQLException ex) {
-            throw null;
+            LOG.error(ex.getMessage() + ". StackTrace : ");
+            for(StackTraceElement ste: ex.getStackTrace()){
+                LOG.debug(ste); 
+            }
+//        } finally {
+//            try {
+//                if(ps!=null) ps.close();
+//            } catch (SQLException ex) {
+//                LOG.error(ex.getMessage() + ". StackTrace : ");
+//            for(StackTraceElement ste: ex.getStackTrace()){
+//                LOG.error(ste);
+//            }
+//            }
         }
+        daoFactory.endConnectionScope();
+        LOG.info("end Connection scope daoFactory");
         return result;
     }
 }

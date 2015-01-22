@@ -14,9 +14,7 @@
     <body>
         <h1>Hello World!</h1>
         
-        Command was compleated successfully ! Please, return to dashboard.
-        <form id="returnToDashboard" action="Controller" method="POST">
-        <input type="hidden" name="command" value="showDashboard">
-        <input type="submit" value="return">
+       Your command has been completed successfully ! Please, return to dashboard.
+       <a href="${pageContext.request.contextPath}/controller/dashboard?command=showDashboard">Home</a>
     </body>
 </html>

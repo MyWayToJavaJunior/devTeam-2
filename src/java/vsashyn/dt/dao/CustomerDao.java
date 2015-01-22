@@ -9,8 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import vsashyn.dt.model.Customer;
 
 /**
@@ -18,29 +19,39 @@ import vsashyn.dt.model.Customer;
  * @author vsa
  */
 public class CustomerDao {
+
+    private static final Logger LOG
+            = LogManager.getLogger(CustomerDao.class.getName());
     Connection connection;
-    
-    CustomerDao(Connection connection){
+
+    CustomerDao(Connection connection) {
         this.connection = connection;
     }
-    
-    public boolean isMember(Customer customer){
-        PreparedStatement ps = null;
+
+    public boolean isMember(Customer customer) {
+        PreparedStatement ps;
         String sqlQuery = "SELECT idCustomer_auth FROM Customer_auth WHERE email=? and password =?";
-        ResultSet rs=null;
+        ResultSet rs = null;
         try {
             ps = connection.prepareStatement(sqlQuery);
             ps.setString(1, customer.getEmail());
             ps.setString(2, customer.getPassword());
             rs = ps.executeQuery();
-        } catch (SQLException ex){
-            }
+        } catch (SQLException ex) {
+            LOG.error(ex.getMessage());
+        }
         try {
             return rs.next();
         } catch (SQLException ex) {
+            LOG.error(ex.getMessage());
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException ex) {
+                LOG.error(ex.getMessage());
+            }
         }
-         
         return false;
     }
-    
+
 }
