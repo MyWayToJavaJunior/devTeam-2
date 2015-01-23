@@ -16,7 +16,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import vsashyn.dt.dao.DAOFactory;
-import vsashyn.dt.dao.ElapsedTimeDao;
+import vsashyn.dt.dao.DAOManager;
+import vsashyn.dt.dao.ElapsedTimeDAO;
 import vsashyn.dt.dao.StaffDAO;
 import vsashyn.dt.model.Project;
 import vsashyn.dt.model.Staff;
@@ -36,10 +37,10 @@ public class ShowDashboardCommand implements Command{
         
         HttpSession session = request.getSession(false);
         DAOFactory daoFactory = new DAOFactory();
-        daoFactory.beginConnectionScope();
+        DAOManager daoManager = daoFactory.getDaoManager();
         LOG.info("Begin connection scope daoFactory");
-        StaffDAO staffDao = daoFactory.getStaffDao();
-        ElapsedTimeDao elapsedTimeDao = daoFactory.getElapsedTimeDao();
+        StaffDAO staffDao = daoManager.getStaffDao();
+        ElapsedTimeDAO elapsedTimeDao = daoManager.getElapsedTimeDao();
         
         Staff worker = (Staff) session.getAttribute("worker");
         Map<Project, Integer> projectsTimes = new HashMap();
@@ -47,7 +48,7 @@ public class ShowDashboardCommand implements Command{
         for(Project project : projects){
             projectsTimes.put(project, elapsedTimeDao.getTotalElapsedTime(worker, project));
         }
-        daoFactory.endConnectionScope();        
+        daoManager.endConnectionScope();        
         LOG.info("end connection scope daoFactory");
         request.setAttribute("projectsTimes",projectsTimes);            //Set HashMap with projects and total elapsed time for each
         resultURL="dashboard";

@@ -7,8 +7,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import vsashyn.dt.dao.DAOFactory;
-import vsashyn.dt.dao.ElapsedTimeDao;
-import vsashyn.dt.dao.ProjectDao;
+import vsashyn.dt.dao.DAOManager;
+import vsashyn.dt.dao.ElapsedTimeDAO;
+import vsashyn.dt.dao.ProjectDAO;
 import vsashyn.dt.dao.StaffDAO;
 import vsashyn.dt.model.Project;
 import vsashyn.dt.model.Staff;
@@ -34,11 +35,11 @@ class AddElapsedTimeCommand implements Command {
         Staff worker = (Staff) session.getAttribute("worker");
         
         DAOFactory daoFactory = new DAOFactory();
-        daoFactory.beginConnectionScope();              //begin connection scope
+        DAOManager daoManager = daoFactory.getDaoManager();              //begin connection scope
         LOG.info("Begin connection scope daoFactory");
-        StaffDAO staffDao = daoFactory.getStaffDao();
-        ProjectDao projectDao = daoFactory.getProjectDao();
-        ElapsedTimeDao elapsedTimeDao = daoFactory.getElapsedTimeDao();
+        StaffDAO staffDao = daoManager.getStaffDao();
+        ProjectDAO projectDao = daoManager.getProjectDao();
+        ElapsedTimeDAO elapsedTimeDao = daoManager.getElapsedTimeDao();
 
         
         Project project = new Project();
@@ -49,7 +50,7 @@ class AddElapsedTimeCommand implements Command {
         if(result){
             resultURL = "successfull";
         }
-        daoFactory.endConnectionScope();
+        daoManager.endConnectionScope();
         LOG.info("end Connection scope daoFactory");
         return resultURL;
     }

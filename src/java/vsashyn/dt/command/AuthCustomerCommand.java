@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import vsashyn.dt.dao.CustomerDao;
+import vsashyn.dt.dao.CustomerDAO;
 import vsashyn.dt.dao.DAOFactory;
 import vsashyn.dt.model.Customer;
 
@@ -34,7 +34,7 @@ class AuthCustomerCommand implements Command {
         customer.setPassword(password);
         
         DAOFactory df = new DAOFactory();
-        CustomerDao customerDao = null;
+        CustomerDAO customerDao = null;
 //        try {
 //            customerDao = df.getCustomerDao();
 //        } catch (SQLException ex) {

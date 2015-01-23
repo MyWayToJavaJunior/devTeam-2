@@ -13,7 +13,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import vsashyn.dt.dao.DAOFactory;
-import vsashyn.dt.dao.ElapsedTimeDao;
+import vsashyn.dt.dao.DAOManager;
+import vsashyn.dt.dao.ElapsedTimeDAO;
 import vsashyn.dt.dao.StaffDAO;
 import vsashyn.dt.model.Staff;
 /**
@@ -42,9 +43,9 @@ class AuthStaffCommand implements Command {
         worker.setPassword(password);
         
         DAOFactory daoFactory = new DAOFactory();
-        daoFactory.beginConnectionScope();
+        DAOManager daoManager = daoFactory.getDaoManager();
         LOG.info("Begin connection scope daoFactory");
-        StaffDAO staffDao = daoFactory.getStaffDao();
+        StaffDAO staffDao = daoManager.getStaffDao();
         
         LOG.info("Dao Objects created");
         
@@ -56,7 +57,7 @@ class AuthStaffCommand implements Command {
             session.setAttribute("worker", worker);
             session.setAttribute("role", staffDao.getQualificationTitle(worker));
             LOG.info("end connection scope daoFactory");
-            daoFactory.endConnectionScope();
+            daoManager.endConnectionScope();
             
             //Run showDashboardCommand
             
@@ -65,7 +66,7 @@ class AuthStaffCommand implements Command {
             return resultURL;
 
         } else {
-            daoFactory.endConnectionScope();
+            daoManager.endConnectionScope();
             resultURL = "index";
             return resultURL;
         }

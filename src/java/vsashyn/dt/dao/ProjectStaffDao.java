@@ -9,8 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import vsashyn.dt.model.Project;
 import vsashyn.dt.model.ProjectStaff;
 import vsashyn.dt.model.Staff;
@@ -19,11 +19,13 @@ import vsashyn.dt.model.Staff;
  *
  * @author vsa
  */
-public class ProjectStaffDao {
+public class ProjectStaffDAO {
     
+    private static Logger LOG 
+            = LogManager.getLogger(ProjectStaffDAO.class.getName());
     Connection connection;
     
-    public ProjectStaffDao(Connection connection){
+    public ProjectStaffDAO(Connection connection){
         this.connection = connection;
     }
     public ProjectStaff getProjectStaffEntry(Staff worker, Project project){
@@ -42,6 +44,10 @@ public class ProjectStaffDao {
             ps.setInt(2, project.getId());
             rs=ps.executeQuery();
         } catch (SQLException ex){
+            LOG.error(ex.getMessage()  + ". Next stack trace :");
+            for(StackTraceElement ste : ex.getStackTrace()){
+                LOG.error(ste);
+            }
         }
         try {
             if(rs.next()){
@@ -50,7 +56,10 @@ public class ProjectStaffDao {
                 projectStaff.setIdProject(project.getId());
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ProjectStaffDao.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.error(ex.getMessage()  + ". Next stack trace :");
+            for(StackTraceElement ste : ex.getStackTrace()){
+                LOG.error(ste);
+            }
         }
         return projectStaff;
     }

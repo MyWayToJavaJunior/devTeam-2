@@ -53,7 +53,7 @@
                 </c:forEach>
             </select> 
             in minutes :
-        <form id="elapsedTimes" action="controller/addtime" method="POST">
+        <form id="elapsedTimes" action="addtime" method="POST">
             <input type="hidden" name="command" value="addElapsedTime"/>
             <input type="text" name="elapsedTime"/>
             <input type="submit" name="changeTime" value ="Submit"/>
