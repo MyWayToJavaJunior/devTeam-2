@@ -31,6 +31,7 @@ and open the template in the editor.
 
 
         Or you can connect as employer. Try using login: sashyn.v@gmail.com   pass: 12345
+        If you want to connect as manager, try :  "ss@gmail.com", 12345
         
         <form action="controller/showdashboard" method="POST"> <!-- Where to send inputed data -->
             <input type="hidden" name="command" value="loginStaff" />

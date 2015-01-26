@@ -1,5 +1,5 @@
 <%--
-    Document   : successfullogin
+    Document   : dashboard
     Created on : Dec 26, 2014, 11:18:01 AM
     Author     : vsa
 --%>
@@ -18,22 +18,55 @@
         <c:if test="${ empty worker }" var="unauthorized" scope="session">
             <c:redirect url="index"/>
         </c:if>
-
-
+        
+        <%------------------------------------------------------------------ 
+        Import manager dashboard
+        ----------------------------------------------------------------
+        <c:if test="${role eq 'Manager'}" var="isManager" scope="session">
+            <c:import url="WEB-INF\jsp\dashboard_manager.jsp" charEncoding="utf-8"/>
+        </c:if> -%>
+        
+        <%------------------------------------------------------------------ 
+        Import developer dashboard
+        -----------------------------------------------------------------
+        <c:if test="${isManager eq false}" var="isDeveloper" scope="session">
+            <c:import url="WEB-INF\jsp\dashboard_developer.jsp" charEncoding="utf-8"/>
+        </c:if> -%>
+        
+        <%------------------------------------------------------------------
+        Welcome print
+        ------------------------------------------------------------------%>
         <p>
             Welcome, ${worker.name} !
             <br>
             Role :   ${role}
             <br>
             Worker id: ${worker.id}
+            <br>
+            Ready to get in new project : ${worker.isFree} . 
+                Change status to :
+                
+                
+                    <select name="status" form="changeInvolvement">
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                <form id="changeInvolvement" action="changeInvolvement" method="POST">
+                    <input type="hidden" name="command" value="changeInvolvement"/>
+                    <input type="submit" name="changeStatus" value="Submit"/>
+                </form>
         </p>
-
         <%--      Example
         <jsp:useBean id="worker" class = "vsashyn.dt.model.Staff" scope="session"/> 
         <jsp:getProperty name="worker" property="name"/>
         <jsp:getProperty name="worker" property="surname"/>
         --%>
         
+        
+        
+        <%--------------------------------------------------------------------
+        Projects in witch involved staff worker
+        ---------------------------------------------------------------------%>
         <p>
             Projects in which you are involved:
             <c:forEach var="elem" items="${projectsTimes}" varStatus="status">
@@ -42,7 +75,10 @@
                 Total time, you spend with this project : ${elem.value}
             </c:forEach>
         </p>
-
+        
+        <%--------------------------------------------------------------------
+        Adding elapsed time 
+        ---------------------------------------------------------------------%>
         <p>
             Please, add elapsed time to project :
             <select name="witchProject" form="elapsedTimes">
@@ -59,6 +95,8 @@
             <input type="submit" name="changeTime" value ="Submit"/>
         </form>
         </p>
+        
+        
 
 </body>
 </html>

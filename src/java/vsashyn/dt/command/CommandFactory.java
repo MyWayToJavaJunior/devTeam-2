@@ -23,13 +23,14 @@ public class CommandFactory {
     private static final Logger LOG = 
             LogManager.getLogger(CommandFactory.class.getName());
     
-    private static Map<String, Command> commands = new HashMap<>(); 
+    private static final Map<String, Command> commands = new HashMap<>(); 
     
     static{
         commands.put("authCustomer", new AuthCustomerCommand());
         commands.put("authStaff", new AuthStaffCommand());
         commands.put("addElapsedTime", new AddElapsedTimeCommand());
         commands.put("showDashboard", new ShowDashboardCommand());
+        commands.put("changeInvolvement", new ChangeInvolvementCommand());
     }
     
     public CommandFactory() throws IOException{
@@ -64,6 +65,9 @@ public class CommandFactory {
         }
         if(command.equals("showDashboard")){
             return commands.get("showDashboard");
+        }
+        if(command.equals("changeInvolvement")){
+            return commands.get("changeInvolvement");
         }
         return null;
     }

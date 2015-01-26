@@ -11,17 +11,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import vsashyn.dt.model.Project;
 import vsashyn.dt.model.Staff;
-
+import vsashyn.dt.dao.AbstractDAO;
 /**
  *
  * @author vsa
  */
-public class StaffDAO {
-
+public class StaffDAO extends AbstractDAO<Integer, Staff>{
+    
+    private static final Logger LOG 
+            = LogManager.getLogger(StaffDAO.class.getName());
     Connection connection;
     
     public StaffDAO(Connection connection) {
@@ -86,6 +89,7 @@ public class StaffDAO {
                 worker.setIsFree(rs.getBoolean("isFree"));
             }
         } catch (SQLException ex) {
+            LOG.error(ex.getMessage());
         }
         return worker;
     }
@@ -107,6 +111,7 @@ public class StaffDAO {
                 result = rs.getString("title");
             }
         } catch (SQLException ex) {
+            LOG.error(ex.getMessage());
         }
         return result;
     }
@@ -125,7 +130,7 @@ public class StaffDAO {
             ps.setInt(1, worker.getId());
             rs = ps.executeQuery();
         } catch (SQLException ex) {
-            throw null;
+            LOG.error(ex.getMessage());
         }
         try {
             while (rs.next()) {
@@ -137,7 +142,7 @@ public class StaffDAO {
                 resultProjects.add(project);
             }
         } catch (SQLException ex) {
-            throw null;
+            LOG.error(ex.getMessage());
         }
         return resultProjects;
     }
@@ -159,4 +164,52 @@ public class StaffDAO {
      return result;
      }
      */
+
+    @Override
+    public List findAll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Staff findEntityById(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean create(Staff entity) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Staff update(Staff worker) {
+        PreparedStatement ps = null;
+        String sqlQuery = "UPDATE Staff "
+                + "SET name=?, "
+                + "surname=?, "
+                + "qualification_id=?, "
+                + "isFree=? "
+                + "WHERE idPerson=?;";
+        ResultSet rs = null;
+        int resultSQL = -1;
+        try {
+            ps = connection.prepareStatement(sqlQuery);
+            ps.setString(1, worker.getName());
+            ps.setString(2, worker.getSurname());
+            ps.setInt(3, worker.getIdQualification());
+            ps.setBoolean(4, worker.isIsFree());
+            ps.setInt(5, worker.getId());
+            ps.executeUpdate();
+        } catch (SQLException ex){
+            LOG.error(ex.getMessage());
+        }
+        if(-1 == resultSQL) LOG.error("SQLQuery has been runned unsuccesfully");
+        return worker;
+    }
+
+   
 }

@@ -32,7 +32,7 @@ class AuthStaffCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         
-        String resultURL = "error65433efttg";
+        String resultURL = "error.jsp";
         String email = request.getParameter("login");
         String password = request.getParameter("password");
         
