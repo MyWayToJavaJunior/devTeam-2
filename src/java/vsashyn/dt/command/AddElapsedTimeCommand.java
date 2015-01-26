@@ -32,7 +32,7 @@ class AddElapsedTimeCommand implements Command {
         HttpSession session = request.getSession(false);
         
         String elapsedTime = request.getParameter("elapsedTime");
-        Staff worker = (Staff) session.getAttribute("worker");
+        Integer workerID = (Integer) session.getAttribute("workerID");
         
         DAOFactory daoFactory = new DAOFactory();
         DAOManager daoManager = daoFactory.getDaoManager();              //begin connection scope
@@ -41,7 +41,7 @@ class AddElapsedTimeCommand implements Command {
         ProjectDAO projectDao = daoManager.getProjectDao();
         ElapsedTimeDAO elapsedTimeDao = daoManager.getElapsedTimeDao();
 
-        
+        Staff worker = staffDao.findEntityById(workerID);
         Project project = new Project();
         project.setId(Integer.parseInt(request.getParameter("witchProject")));
         project = projectDao.getProjectEntry(project);

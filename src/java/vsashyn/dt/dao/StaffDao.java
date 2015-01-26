@@ -31,17 +31,10 @@ public class StaffDAO extends AbstractDAO<Integer, Staff>{
         this.connection = connection;
     }
     
-    public boolean closeConnection(){
-        try {
-            this.connection.close();
-        } catch (SQLException ex) {
-            throw null;
-        }
-        return true;
-    }
-    public boolean isMember(Staff worker) {
-        String email = worker.getEmail();
-        String password = worker.getPassword();
+    
+    public boolean isMember(String email, String password) {
+        //String email = worker.getEmail();
+        //String password = worker.getPassword();
         PreparedStatement ps = null;
         String sqlQuery = "SELECT * FROM Staff_auth WHERE email=? and password=?";
         try {
@@ -56,43 +49,45 @@ public class StaffDAO extends AbstractDAO<Integer, Staff>{
                 return true;
             }
         } catch (SQLException ex) {
+            LOG.error(ex.getMessage());
         }
         return false;
     }
+
 
     /**
      *
      * @param email
      * @return null, if we cannot execute query
      */
-    public Staff getStaffEntry(Staff worker) {
-        if (!isMember(worker)) {
-            //Ты неправильно используешь метод получения работника. 
-            return null;
-        }
-        PreparedStatement ps = null;
-        String sqlQuery = "SELECT S.idPerson, S.name, S.surname, S.qualification_id, S.isFree "
-                + "FROM Staff as S, Staff_auth as Sa WHERE S.idPerson = Sa.staff_id  and Sa.email=?";
-        ResultSet rs = null;
-        try {
-            ps = connection.prepareStatement(sqlQuery);
-            ps.setString(1, worker.getEmail());
-            rs = ps.executeQuery();
-        } catch (SQLException ex) {
-        }
-        try {
-            if (rs.next()) {
-                worker.setId(rs.getInt("idPerson"));
-                worker.setName(rs.getString("name"));
-                worker.setSurname(rs.getString("surname"));
-                worker.setIdQualification(rs.getInt("qualification_id"));
-                worker.setIsFree(rs.getBoolean("isFree"));
-            }
-        } catch (SQLException ex) {
-            LOG.error(ex.getMessage());
-        }
-        return worker;
-    }
+//    public Staff getStaffEntry(Staff worker) {
+//        if (!isMember(worker)) {
+//            //Ты неправильно используешь метод получения работника. 
+//            return null;
+//        }
+//        PreparedStatement ps = null;
+//        String sqlQuery = "SELECT S.idPerson, S.name, S.surname, S.qualification_id, S.isFree "
+//                + "FROM Staff as S, Staff_auth as Sa WHERE S.idPerson = Sa.staff_id  and Sa.email=?";
+//        ResultSet rs = null;
+//        try {
+//            ps = connection.prepareStatement(sqlQuery);
+//            ps.setString(1, worker.getEmail());
+//            rs = ps.executeQuery();
+//        } catch (SQLException ex) {
+//        }
+//        try {
+//            if (rs.next()) {
+//                worker.setId(rs.getInt("idPerson"));
+//                worker.setName(rs.getString("name"));
+//                worker.setSurname(rs.getString("surname"));
+//                worker.setIdQualification(rs.getInt("qualification_id"));
+//                worker.setIsFree(rs.getBoolean("isFree"));
+//            }
+//        } catch (SQLException ex) {
+//            LOG.error(ex.getMessage());
+//        }
+//        return worker;
+//    }
     
     public String getQualificationTitle(Staff worker) {
         PreparedStatement ps = null;
@@ -104,6 +99,7 @@ public class StaffDAO extends AbstractDAO<Integer, Staff>{
             ps.setInt(1, worker.getId());
             rs = ps.executeQuery();
         } catch (SQLException ex) {
+            LOG.error(ex);
         }
         String result = null;
         try {
@@ -146,25 +142,43 @@ public class StaffDAO extends AbstractDAO<Integer, Staff>{
         }
         return resultProjects;
     }
-    /*
-     public Integer getWorkerID(String email){
-     PreparedStatement ps = null;
-     String sqlQuery = "SELECT S.idPerson FROM Staff as S, Staff_auth as Sa WHERE S.idPerson=Sa.staff_id and Sa.email=?";
-     ResultSet rs=null;
-     Integer result=-1;
-     try{
-     ps=connection.prepareStatement(sqlQuery);
-     ps.setString(1, email);
-     rs = ps.executeQuery();
-     rs.next();
-     result = rs.getInt("id_person");
-     } catch (SQLException ex){
-     }
-       
-     return result;
-     }
+    
+    /**
+     * Get Entity By Email and Password
+     * @param login
+     * @param password
+     * @return Staff entity
      */
-
+    public Staff findEntityByEmailAndPass(String login, String password){
+        Staff worker = new Staff();
+        PreparedStatement ps = null;
+        String sqlQuery = "SELECT S.idPerson, S.name, S.surname, S.qualification_id, S.isFree "
+                + "FROM Staff as S, Staff_auth as Sa WHERE S.idPerson = Sa.staff_id  and Sa.email=? and Sa.password=?";
+        ResultSet rs = null;
+        try {
+            ps = connection.prepareStatement(sqlQuery);
+            ps.setString(1, login);
+            ps.setString(2, password);
+            rs = ps.executeQuery();
+        } catch (SQLException ex) {
+            LOG.error(ex);
+        }
+        try {
+            if (rs.next()) {
+                worker.setId(rs.getInt("idPerson"));
+                worker.setName(rs.getString("name"));
+                worker.setSurname(rs.getString("surname"));
+                worker.setIdQualification(rs.getInt("qualification_id"));
+                worker.setIsFree(rs.getBoolean("isFree"));
+                worker.setEmail(login);
+                worker.setPassword(password);
+            }
+        } catch (SQLException ex) {
+            LOG.error(ex.getMessage());
+        }
+        return worker;
+    }
+    
     @Override
     public List findAll() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -172,7 +186,35 @@ public class StaffDAO extends AbstractDAO<Integer, Staff>{
 
     @Override
     public Staff findEntityById(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Staff worker = new Staff();
+        PreparedStatement ps ;
+        ResultSet rs = null;
+        String sqlQuery = "SELECT S.name, S.surname, S.qualification_id, S.isFree, Sa.email, Sa.password" 
+            +   " FROM Staff as S, Staff_auth as Sa WHERE S.idPerson = Sa.staff_id and S.idPerson=?";
+        
+        try{
+            ps = connection.prepareStatement(sqlQuery);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+        } catch (SQLException ex){
+            LOG.error(ex.getMessage());
+        }
+        try {
+            if (rs.next()) {
+                worker.setName(rs.getString("name"));
+                worker.setSurname(rs.getString("surname"));
+                worker.setIdQualification(rs.getInt("qualification_id"));
+                worker.setIsFree(rs.getBoolean("isFree"));
+                worker.setEmail(rs.getString("email"));
+                worker.setPassword(rs.getString("password"));
+                worker.setId(id);
+            } else {
+                LOG.error("Can't found worker with this ID!");
+            }
+        } catch (SQLException ex) {
+            LOG.error(ex.getMessage());
+        }
+        return worker;
     }
 
     @Override
@@ -203,7 +245,7 @@ public class StaffDAO extends AbstractDAO<Integer, Staff>{
             ps.setInt(3, worker.getIdQualification());
             ps.setBoolean(4, worker.isIsFree());
             ps.setInt(5, worker.getId());
-            ps.executeUpdate();
+            resultSQL = ps.executeUpdate();
         } catch (SQLException ex){
             LOG.error(ex.getMessage());
         }

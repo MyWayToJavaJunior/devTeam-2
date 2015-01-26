@@ -33,16 +33,25 @@ public class ShowDashboardCommand implements Command{
     
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String resultURL = "asdfasdf";
+        String resultURL = "error.jsp";
         
         HttpSession session = request.getSession(false);
+        Integer workerID = (Integer) session.getAttribute("workerID");
+        LOG.info("returned workerID ==" + workerID);
+
+
         DAOFactory daoFactory = new DAOFactory();
         DAOManager daoManager = daoFactory.getDaoManager();
-        LOG.info("Begin connection scope daoFactory");
         StaffDAO staffDao = daoManager.getStaffDao();
         ElapsedTimeDAO elapsedTimeDao = daoManager.getElapsedTimeDao();
+    
+        LOG.info("Begin connection scope daoFactory");
         
-        Staff worker = (Staff) session.getAttribute("worker");
+        //Integer workerID =  Integer.p;
+        Staff worker = staffDao.findEntityById(workerID);
+        request.setAttribute("worker", worker);
+        LOG.info("Set request attribute worker ");
+        
         Map<Project, Integer> projectsTimes = new HashMap();
         List<Project> projects = staffDao.getProjects(worker);          //Get all projects, where worker involved
         for(Project project : projects){

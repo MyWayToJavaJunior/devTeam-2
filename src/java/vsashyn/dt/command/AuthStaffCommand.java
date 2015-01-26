@@ -38,9 +38,9 @@ class AuthStaffCommand implements Command {
         
         LOG.info("get auth Parameters from request");
         
-        Staff worker = new Staff();
-        worker.setEmail(email);
-        worker.setPassword(password);
+        //Staff worker = new Staff();
+        //worker.setEmail(email);
+        //worker.setPassword(password);
         
         DAOFactory daoFactory = new DAOFactory();
         DAOManager daoManager = daoFactory.getDaoManager();
@@ -49,12 +49,13 @@ class AuthStaffCommand implements Command {
         
         LOG.info("Dao Objects created");
         
-        if(staffDao.isMember(worker)){
+        if(staffDao.isMember(email,password)){
             LOG.info("New user loginning as staff worker");
-            //Определить кто он: менеджер или девелопер
             HttpSession session = request.getSession();
-            worker = staffDao.getStaffEntry(worker);
-            session.setAttribute("worker", worker);
+            Staff worker = staffDao.findEntityByEmailAndPass(email,password);
+            session.setAttribute("workerID", worker.getId());
+            LOG.info("session Attribute workerID== " + worker.getId());
+            //Определить кто он: менеджер или девелопер
             session.setAttribute("role", staffDao.getQualificationTitle(worker));
             LOG.info("end connection scope daoFactory");
             daoManager.endConnectionScope();

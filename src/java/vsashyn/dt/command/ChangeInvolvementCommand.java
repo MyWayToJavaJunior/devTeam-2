@@ -31,17 +31,23 @@ class ChangeInvolvementCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String resultURL = "error.jsp";
         HttpSession session = request.getSession(false);
-        Staff worker = (Staff) session.getAttribute("worker");
+        Integer workerID = (Integer) session.getAttribute("workerID");
         String status = request.getParameter("status");
-        worker.setIsFree(Boolean.getBoolean(status));
-        
+
         DAOFactory daoFactory = new DAOFactory();
         DAOManager daoManager = daoFactory.getDaoManager();
         StaffDAO staffDao = daoManager.getStaffDao();
+        Staff worker = staffDao.findEntityById(workerID);
+        if(status.equals("true")){ 
+            worker.setIsFree(Boolean.TRUE);
+                } else {
+            worker.setIsFree(Boolean.FALSE);
+                }
+        
         staffDao.update(worker);
         daoManager.endConnectionScope();
         
-        LOG.info("User " + session.getId() + "change status to " + status);
+        LOG.info("User " + session.getId() + "change involve status to " + status);
         resultURL = "successfull";
         return resultURL;
     }
