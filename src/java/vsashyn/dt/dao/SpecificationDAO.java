@@ -46,7 +46,8 @@ public class SpecificationDAO extends AbstractDAO<Integer, Specification> {
         try {
             while(rs.next()){
                 Specification spec = new Specification();
-                spec.setCustomerId(rs.getInt("idSpecification"));
+                spec.setId(rs.getInt("idSpecification"));
+                spec.setCustomerId(rs.getInt("customer_id"));
                 spec.setTitle(rs.getString("title"));
                 spec.setSpecification(rs.getString("f_spec"));
                 specs.add(spec);
@@ -64,7 +65,28 @@ public class SpecificationDAO extends AbstractDAO<Integer, Specification> {
 
     @Override
     public Specification findEntityById(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PreparedStatement ps = null;
+        String sqlQuery = "SELECT * FROM Specification WHERE idSpecification = ?;";
+        ResultSet rs = null;
+        try {
+            ps = connection.prepareStatement(sqlQuery);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+        } catch (SQLException ex){
+            LOG.error(ex.getMessage());
+        }
+        Specification spec = new Specification();
+        try {
+            if(rs.next()){
+                spec.setTitle(rs.getString("title"));
+                spec.setSpecification(rs.getString("f_spec"));
+                spec.setCustomerId(rs.getInt("customer_id"));
+                spec.setId(id);
+            }
+        } catch (SQLException ex){
+            LOG.error(ex.getMessage());
+        }
+        return spec;
     }
 
     @Override

@@ -17,6 +17,7 @@ import vsashyn.dt.model.Project;
  * @author vsa
  */
 public class ProjectDAO extends AbstractDAO<Integer, Project>{
+    
     private static final org.apache.logging.log4j.Logger LOG = 
             LogManager.getLogger(ProjectDAO.class.getName());
     Connection connection;
@@ -125,7 +126,20 @@ public class ProjectDAO extends AbstractDAO<Integer, Project>{
 
     @Override
     public boolean create(Project entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PreparedStatement ps = null;
+        String sqlQuery = "INSERT INTO Project (title, specification_id, bill) "
+                + "VALUES (?,?,?);";
+        int result = -1;
+        try {
+            ps = connection.prepareStatement(sqlQuery);
+            ps.setString(1 ,entity.getTitle());
+            ps.setInt(2 ,entity.getIdSpecification());
+            ps.setInt(3 ,entity.getBill());
+            result = ps.executeUpdate();
+        } catch (SQLException ex){
+            LOG.error(ex.getMessage());
+        }
+        return (result>0);
     }
 
     @Override

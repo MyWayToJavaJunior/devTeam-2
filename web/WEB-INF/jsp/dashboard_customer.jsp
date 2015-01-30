@@ -51,6 +51,6 @@
         
         
         <hr align="center" width="500" size="2" color="#ff0000" />
-        <a href="controller/index?command=logout">Logout</a>
+        <a href="index?command=logout">Logout</a>
 </body>
 </html>

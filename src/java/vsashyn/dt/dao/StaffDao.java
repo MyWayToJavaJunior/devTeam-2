@@ -183,7 +183,28 @@ public class StaffDAO extends AbstractDAO<Integer, Staff>{
     public List findAll() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    public List<Staff> findAllFree(){
+        PreparedStatement ps = null;
+        String sqlQuery = "SELECT * FROM Staff WHERE isFree=true";
+        ResultSet rs = null;
+        try {
+            ps = connection.prepareStatement(sqlQuery);
+            rs = ps.executeQuery();
+        } catch (SQLException ex){
+            LOG.error(ex.getMessage());
+        }
+        List<Staff> staff = new ArrayList<>();
+        try {
+            while(rs.next()){
+                Staff worker = findEntityById(rs.getInt("idPerson"));
+                staff.add(worker);
+            }
+        } catch (SQLException ex){
+            LOG.error(ex.getMessage());
+        }
+        return staff;
+    }
+    
     @Override
     public Staff findEntityById(Integer id) {
         Staff worker = new Staff();

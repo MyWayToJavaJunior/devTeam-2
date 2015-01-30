@@ -62,6 +62,15 @@
     </servlet-mapping>
     
     <servlet>
+        <servlet-name>Prepare_project</servlet-name>
+        <jsp-file>/WEB-INF/jsp/prepare_project.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Prepare_project</servlet-name>
+        <url-pattern>/prepare_project</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
         <servlet-name>faillogin</servlet-name>
         <jsp-file>/WEB-INF/jsp/faillogin.jsp</jsp-file>
     </servlet>

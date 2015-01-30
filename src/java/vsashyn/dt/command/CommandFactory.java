@@ -34,6 +34,8 @@ public class CommandFactory {
         commands.put("logout", new LogoutCommand());
         commands.put("addSpecification", new AddSpecificationCommand());
         commands.put("showCustomerDashboard", new ShowCustomerDashboardCommand());
+        commands.put("createProject", new CreateProjectCommand());
+        commands.put("prepareProject", new PrepareProjectCommand());
     }
         //in development
 //    public CommandFactory() throws IOException{
@@ -81,7 +83,12 @@ public class CommandFactory {
         if(command.equals("showCustomerDashboard")){
             return commands.get("showCustomerDashboard");
         }
-            
+        if(command.equals("createProject")){
+            return commands.get("createProject");
+        }
+        if(command.equals("prepareProject")){
+            return commands.get("prepareProject");
+        }   
         return null;
     }
 }

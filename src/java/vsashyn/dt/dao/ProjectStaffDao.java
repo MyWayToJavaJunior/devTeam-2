@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import vsashyn.dt.model.Project;
@@ -19,7 +20,7 @@ import vsashyn.dt.model.Staff;
  *
  * @author vsa
  */
-public class ProjectStaffDAO {
+public class ProjectStaffDAO extends AbstractDAO<Integer, ProjectStaff>{
     
     private static Logger LOG 
             = LogManager.getLogger(ProjectStaffDAO.class.getName());
@@ -62,5 +63,63 @@ public class ProjectStaffDAO {
             }
         }
         return projectStaff;
+    }
+
+    @Override
+    public List<ProjectStaff> findAll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ProjectStaff findEntityById(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean delete(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean create(ProjectStaff entity) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    /**
+     * 
+     * @param entity[]
+     * @return 
+     */
+    public boolean create(ProjectStaff[] list){
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException ex){
+            LOG.error(ex.getMessage());
+        }
+        PreparedStatement ps = null;
+        String sqlQuery = "INSERT INTO Project_staff (Project_idProject, Staff_id_person) VALUES (?, ?);";
+        int result = -1;
+        for(ProjectStaff entity : list){
+            try {
+                ps = connection.prepareStatement(sqlQuery);
+                ps.setInt(1, entity.getIdProject());
+                ps.setInt(2, entity.getIdPerson());
+                result = ps.executeUpdate();
+            } catch (SQLException ex){
+                LOG.error(ex.getMessage());
+                try {
+                    LOG.error("Transaction is bein rolled back");
+                    connection.rollback();
+                } catch (SQLException ex2){
+                    LOG.error(ex2.getMessage());
+                }
+            }
+        }
+        return (result>-1);
+    }
+
+    @Override
+    public ProjectStaff update(ProjectStaff entity) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

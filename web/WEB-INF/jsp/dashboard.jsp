@@ -66,14 +66,18 @@
         <c:if test="${ isManager and worker.isFree }">
             New projects, witch you can accept :
             
-            <c:forEach var="elem" items="${requestScope.specificationsNew}" varStatus="status">
-                <p>
-                ${elem.id} <br>
-                ${elem.title} <br>
-                ${elem.specification} <br>
-                ${elem.customerId} <br>
-                </p>
-            </c:forEach>
+            <form id="prepareProjectForm" action="prepareProject" method="POST" >
+                <c:forEach var="elem" items="${requestScope.specificationsNew}" varStatus="status">
+                    <p>
+                    <input type="radio" name="idSpecification"  value="${elem.id}">
+                    ${elem.title} <br>
+                    Spec : ${elem.specification} <br>
+                    CustomerID : ${elem.customerId} <br>
+                    </p>
+                </c:forEach>
+                    <input type="hidden" name="command" value="prepareProject"/>
+                    <input type="submit" name="submitProject" value="Begin prepare new Project"/>
+            </form>
         </c:if>
         <%--------------------------------------------------------------------
         Projects in witch involved staff worker
@@ -112,7 +116,7 @@
         
         
         <hr align="center" width="500" size="2" color="#ff0000" />
-        <a href="controller/index?command=logout">Logout</a>
+        <a href="index?command=logout">Logout</a>
 
 </body>
 </html>
