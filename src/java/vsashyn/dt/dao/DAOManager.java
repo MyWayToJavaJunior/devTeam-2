@@ -49,4 +49,7 @@ public class DAOManager {
     public ProjectStaffDAO getProjectStaffDao(){
         return new ProjectStaffDAO(connection);
     }
+    public SpecificationDAO getSpecificationDao(){
+        return new SpecificationDAO(connection);
+    }
 }

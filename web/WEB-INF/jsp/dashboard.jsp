@@ -21,10 +21,10 @@
         
         <%------------------------------------------------------------------ 
         Import manager dashboard
-        ----------------------------------------------------------------
+        ----------------------------------------------------------------%>
         <c:if test="${role eq 'Manager'}" var="isManager" scope="session">
-            <c:import url="WEB-INF\jsp\dashboard_manager.jsp" charEncoding="utf-8"/>
-        </c:if> -%>
+           <%-- <c:import url="WEB-INF\jsp\dashboard_manager.jsp" charEncoding="utf-8"/> --%>
+        </c:if> 
         
         <%------------------------------------------------------------------ 
         Import developer dashboard
@@ -62,8 +62,19 @@
         <jsp:getProperty name="worker" property="surname"/>
         --%>
         
-        
-        
+        <%-- Show all new spec for manager ----------%>
+        <c:if test="${ isManager and worker.isFree }">
+            New projects, witch you can accept :
+            
+            <c:forEach var="elem" items="${requestScope.specificationsNew}" varStatus="status">
+                <p>
+                ${elem.id} <br>
+                ${elem.title} <br>
+                ${elem.specification} <br>
+                ${elem.customerId} <br>
+                </p>
+            </c:forEach>
+        </c:if>
         <%--------------------------------------------------------------------
         Projects in witch involved staff worker
         ---------------------------------------------------------------------%>
@@ -73,6 +84,9 @@
                 Id project: ${elem.key.id} 
                 Title: ${elem.key.title} 
                 Total time, you spend with this project : ${elem.value}
+                <c:if test="${isManager}">
+                    Projects bill: ${elem.key.bill}
+                </c:if>
             </c:forEach>
         </p>
         
@@ -97,6 +111,8 @@
         </p>
         
         
+        <hr align="center" width="500" size="2" color="#ff0000" />
+        <a href="controller/index?command=logout">Logout</a>
 
 </body>
 </html>

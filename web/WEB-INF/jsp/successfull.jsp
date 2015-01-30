@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,9 +13,17 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1> Congratulations! </h1>
         
        Your command has been completed successfully ! Please, return to dashboard.
-       <a href="${pageContext.request.contextPath}/controller/dashboard?command=showDashboard">Home</a>
-    </body>
+       
+    <c:if test="${ not empty customerID  }">
+        <a href="${pageContext.request.contextPath}/controller/dashboard?command=showCustomerDashboard">Home</a>
+    </c:if>
+    
+    <c:if test="${ not empty workerID}">
+           <a href="${pageContext.request.contextPath}/controller/dashboard?command=showDashboard">Home</a>
+    </c:if>
+    
+</body>
 </html>

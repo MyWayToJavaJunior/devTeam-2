@@ -31,13 +31,16 @@ public class CommandFactory {
         commands.put("addElapsedTime", new AddElapsedTimeCommand());
         commands.put("showDashboard", new ShowDashboardCommand());
         commands.put("changeInvolvement", new ChangeInvolvementCommand());
+        commands.put("logout", new LogoutCommand());
+        commands.put("addSpecification", new AddSpecificationCommand());
+        commands.put("showCustomerDashboard", new ShowCustomerDashboardCommand());
     }
-    
-    public CommandFactory() throws IOException{
-        Properties props = new Properties();
-        props.load(new FileInputStream(
-                new File("config/commands.properties")));
-    }
+        //in development
+//    public CommandFactory() throws IOException{
+//        Properties props = new Properties();
+//        props.load(new FileInputStream(
+//                new File("config/commands.properties")));
+//    }
     
     public static Command createCommand(HttpServletRequest request){
         
@@ -69,6 +72,16 @@ public class CommandFactory {
         if(command.equals("changeInvolvement")){
             return commands.get("changeInvolvement");
         }
+        if(command.equals("logout")){
+            return commands.get("logout");
+        }
+        if(command.equals("addSpecification")){
+            return commands.get("addSpecification");
+        }
+        if(command.equals("showCustomerDashboard")){
+            return commands.get("showCustomerDashboard");
+        }
+            
         return null;
     }
 }

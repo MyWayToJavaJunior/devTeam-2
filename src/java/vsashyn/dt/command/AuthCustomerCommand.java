@@ -11,8 +11,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import vsashyn.dt.dao.CustomerDAO;
 import vsashyn.dt.dao.DAOFactory;
+import vsashyn.dt.dao.DAOManager;
 import vsashyn.dt.model.Customer;
 
 /**
@@ -26,28 +28,33 @@ class AuthCustomerCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        String resultURL = "error.jsp";
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         
-        Customer customer = new Customer();
-        customer.setEmail(login);
-        customer.setPassword(password);
+//        Customer customer = new Customer();
+//        customer.setEmail(login);
+//        customer.setPassword(password);
         
-        DAOFactory df = new DAOFactory();
-        CustomerDAO customerDao = null;
-//        try {
-//            customerDao = df.getCustomerDao();
-//        } catch (SQLException ex) {
-//            for(StackTraceElement stl :ex.getStackTrace()){
-//                System.err.println(stl);
-//            }
-//        }
+        DAOFactory daoFactory = new DAOFactory();
+        DAOManager daoManager = daoFactory.getDaoManager();
+        CustomerDAO customerDao = daoManager.getCustomerDao();
+
         
-        if(customerDao.isMember(customer)){
-           return "successfullogin";
+        
+        //insert code after , to show dashboard
+        if( customerDao.isMember(login, password) ) {
+            HttpSession session = request.getSession(true);
+            Customer customer = customerDao.findEntityByEmailAndPass(login, password);
+            session.setAttribute("customerID", customer.getId());
         } else {
-            return "faillogin";
+            // wrong email/password
         }
+        daoManager.endConnectionScope();
+        
+        Command command = new ShowCustomerDashboardCommand();
+        resultURL = command.execute(request, response);
+        return resultURL;
         
     }
     

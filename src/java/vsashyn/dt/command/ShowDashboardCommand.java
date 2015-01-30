@@ -18,8 +18,10 @@ import org.apache.logging.log4j.Logger;
 import vsashyn.dt.dao.DAOFactory;
 import vsashyn.dt.dao.DAOManager;
 import vsashyn.dt.dao.ElapsedTimeDAO;
+import vsashyn.dt.dao.SpecificationDAO;
 import vsashyn.dt.dao.StaffDAO;
 import vsashyn.dt.model.Project;
+import vsashyn.dt.model.Specification;
 import vsashyn.dt.model.Staff;
 
 /**
@@ -47,7 +49,6 @@ public class ShowDashboardCommand implements Command{
     
         LOG.info("Begin connection scope daoFactory");
         
-        //Integer workerID =  Integer.p;
         Staff worker = staffDao.findEntityById(workerID);
         request.setAttribute("worker", worker);
         LOG.info("Set request attribute worker ");
@@ -57,6 +58,18 @@ public class ShowDashboardCommand implements Command{
         for(Project project : projects){
             projectsTimes.put(project, elapsedTimeDao.getTotalElapsedTime(worker, project));
         }
+        
+        /* If worker is manager, and status isFree set true, he will see 
+         * new specs from customers, and propose to create new project.
+         */
+        if(staffDao.getQualificationTitle(worker).equals("Manager") 
+                && worker.isIsFree()){
+            SpecificationDAO specificationDao = daoManager.getSpecificationDao();
+            List<Specification> specificationsNew = specificationDao.findAllNew();
+            request.setAttribute("specificationsNew", specificationsNew);
+            
+        }
+        
         daoManager.endConnectionScope();        
         LOG.info("end connection scope daoFactory");
         request.setAttribute("projectsTimes",projectsTimes);            //Set HashMap with projects and total elapsed time for each

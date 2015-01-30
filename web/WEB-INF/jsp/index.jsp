@@ -18,12 +18,12 @@ and open the template in the editor.
         
         You can login as customer.
         <div>
-            <form action="controller/auth" method="POST"> <!-- Where to send inputed data -->
+            <form action="controller/showdashboard" method="POST"> <!-- Where to send inputed data -->
                 <input type="hidden" name="command" value="loginCustomer" />
                 <fieldset>                                  <!-- Group you form  and add legend-->
                     <legend>Enter you Value</legend>
-                    <input type="text" name="login" /> <!-- name - variable name of parameter -->
-                    <input type="text" name="password" /> 
+                    <input type="text" name="login" value="google@google"/> <!-- name - variable name of parameter -->
+                    <input type="text" name="password" value="12345"/> 
                     <input type="submit" name="isCustomer" value="Submit"  />
             </form>
         </div>
