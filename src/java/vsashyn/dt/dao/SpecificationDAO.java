@@ -95,22 +95,35 @@ public class SpecificationDAO extends AbstractDAO<Integer, Specification> {
     }
 
     @Override
-    public boolean create(Specification entity) {
+    public Integer create(Specification entity) {
         int result=-1;
         PreparedStatement ps = null;
+        PreparedStatement psGetId = null;
+        ResultSet rsId = null;
         String sqlQuery = "INSERT INTO Specification (title, f_spec, customer_id) VALUES (?, ?, ?); ";
+        String sqlQueryGetId = "LAST_INSERT_ID()";
         try {
+            connection.setAutoCommit(false);
             ps = connection.prepareStatement(sqlQuery);
+            psGetId = connection.prepareStatement(sqlQueryGetId);
             ps.setString(1, entity.getTitle());
             ps.setString(2, entity.getSpecification());
             ps.setInt(3, entity.getCustomerId());
-            result = ps.executeUpdate();
+            ps.executeUpdate();
+            rsId = psGetId.executeQuery();
+            result = rsId.getInt("idSpecification");
+            connection.commit();
         } catch (SQLException ex){
             LOG.error(ex.getMessage());
         }
-        return (result>-1);
-    }
-
+        try {
+            connection.setAutoCommit(true);
+        } catch (SQLException ex){
+            LOG.error(ex.getMessage());
+        }
+        return result;
+    }       
+        
     @Override
     public Specification update(Specification entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -123,7 +123,7 @@ public class CustomerDAO extends AbstractDAO<Integer, Customer>{
     }
 
     @Override
-    public boolean create(Customer entity) {
+    public Integer create(Customer entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

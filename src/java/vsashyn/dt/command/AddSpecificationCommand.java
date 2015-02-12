@@ -50,7 +50,7 @@ class AddSpecificationCommand implements Command {
         spec.setTitle(title);
         spec.setSpecification(specification);
         
-        if(specificationDao.create(spec)) {
+        if(specificationDao.create(spec)!=null) {
             LOG.info("New specification was added by user "+ customer.getName());
         } else {
             LOG.info("Adding new specification was failed with user" + customer.getName());

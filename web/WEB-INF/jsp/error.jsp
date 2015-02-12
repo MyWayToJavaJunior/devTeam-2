@@ -10,6 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Error Page</title>
+        <link href='${pageContext.servletContext.contextPath}/css/bootstrap.css' rel='stylesheet'>
     </head>
     Request from ${pageContext.errorData.requestURI} is failed
     <br/>

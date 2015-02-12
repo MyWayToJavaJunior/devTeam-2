@@ -15,6 +15,6 @@ public  abstract class AbstractDAO <K, Entity> {
     public abstract List<Entity> findAll();
     public abstract Entity findEntityById(K id);
     public abstract boolean delete(K id);
-    public abstract boolean create(Entity entity);
+    public abstract K create(Entity entity);
     public abstract Entity update(Entity entity);
 }

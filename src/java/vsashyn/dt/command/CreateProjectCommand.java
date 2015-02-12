@@ -5,8 +5,6 @@
  */
 package vsashyn.dt.command;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import vsashyn.dt.dao.ProjectDAO;
 import vsashyn.dt.dao.ProjectStaffDAO;
+import vsashyn.dt.dao.StaffDAO;
 import vsashyn.dt.model.ProjectStaff;
 
 /**
@@ -45,11 +44,11 @@ public class CreateProjectCommand implements Command{
         String titleProject = request.getParameter("nameProject");
         int billProject = Integer.valueOf(request.getParameter("billProject"));
         
+        //Get idWorkers
         Map <String, String[]> parameters = request.getParameterMap();
         int[] idWorkers = new int[0];
-        
         if(parameters.get("workerIDs") != null){
-            LOG.info("next array" + parameters.get("workerIDs").length);
+            LOG.info("next array consist of  :" + parameters.get("workerIDs").length + " workers.");
             String[] idWorkerParams = parameters.get("workerIDs");
             idWorkers = new int[parameters.get("workerIDs").length];
             for(int i=0; i<idWorkers.length; i++){
@@ -61,20 +60,21 @@ public class CreateProjectCommand implements Command{
         DAOManager daoManager = daoFactory.getDaoManager();
         ProjectDAO projectDao = daoManager.getProjectDao();
         ProjectStaffDAO projectStaffDao = daoManager.getProjectStaffDao();
+        StaffDAO staffDao = daoManager.getStaffDao();
         //create project   
         Project project = new Project();
         project.setTitle(titleProject);
         project.setBill(billProject);
         project.setIdSpecification(idSpec);
-        projectDao.create(project);
+        project.setId(projectDao.create(project));
         //add find project ID 
-        LOG.info("created new project : " + project.getTitle());
+        LOG.info("created new project : " + project.getTitle() + " ID : " + project.getId());
         //add staff to project, if idWorkers not null
         if(idWorkers.length>0){
             ProjectStaff[] workersToProject = new ProjectStaff[idWorkers.length];
             for(int idItem=0; idItem < idWorkers.length; idItem++) {
                 ProjectStaff projectStaff = new ProjectStaff();
-                projectStaff.setIdPerson(idItem);
+                projectStaff.setIdPerson(idWorkers[idItem]);
                 projectStaff.setIdProject(project.getId());
                 workersToProject[idItem] = projectStaff;
             }

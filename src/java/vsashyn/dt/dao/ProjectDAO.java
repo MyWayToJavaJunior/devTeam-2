@@ -125,21 +125,38 @@ public class ProjectDAO extends AbstractDAO<Integer, Project>{
     }
 
     @Override
-    public boolean create(Project entity) {
+    public Integer create(Project entity) {
         PreparedStatement ps = null;
+        PreparedStatement psGetId = null;
+        ResultSet rsId = null;
         String sqlQuery = "INSERT INTO Project (title, specification_id, bill) "
                 + "VALUES (?,?,?);";
+        String sqlQueryGetId = " SELECT LAST_INSERT_ID()";
         int result = -1;
         try {
+            connection.setAutoCommit(false);
             ps = connection.prepareStatement(sqlQuery);
+            psGetId = connection.prepareStatement(sqlQueryGetId);
             ps.setString(1 ,entity.getTitle());
             ps.setInt(2 ,entity.getIdSpecification());
             ps.setInt(3 ,entity.getBill());
-            result = ps.executeUpdate();
+            ps.executeUpdate();
+             psGetId.executeQuery();
+
+            
+            connection.commit();
         } catch (SQLException ex){
             LOG.error(ex.getMessage());
         }
-        return (result>0);
+        try {
+            rsId = psGetId.getResultSet();
+            rsId.next();
+            result = rsId.getInt("LAST_INSERT_ID()");
+            connection.setAutoCommit(true);
+        } catch (SQLException ex){
+            LOG.error(ex.getMessage());
+        }
+        return result;
     }
 
     @Override

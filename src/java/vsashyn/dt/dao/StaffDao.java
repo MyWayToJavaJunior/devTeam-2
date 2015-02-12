@@ -244,7 +244,7 @@ public class StaffDAO extends AbstractDAO<Integer, Staff>{
     }
 
     @Override
-    public boolean create(Staff entity) {
+    public Integer create(Staff entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

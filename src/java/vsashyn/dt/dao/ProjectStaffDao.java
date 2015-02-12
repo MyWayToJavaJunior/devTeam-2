@@ -79,15 +79,19 @@ public class ProjectStaffDAO extends AbstractDAO<Integer, ProjectStaff>{
     public boolean delete(Integer id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    /**
+     * 
+     * @param entity
+     * @return pk of created row 
+     */
     @Override
-    public boolean create(ProjectStaff entity) {
+    public Integer create(ProjectStaff entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     /**
      * 
-     * @param entity[]
      * @return 
      */
     public boolean create(ProjectStaff[] list){
@@ -104,6 +108,8 @@ public class ProjectStaffDAO extends AbstractDAO<Integer, ProjectStaff>{
                 ps = connection.prepareStatement(sqlQuery);
                 ps.setInt(1, entity.getIdProject());
                 ps.setInt(2, entity.getIdPerson());
+                LOG.info ("Store next indexes project:person to Project_Staff : " + entity.getIdProject() 
+                        + ": " + entity.getIdPerson() );
                 result = ps.executeUpdate();
             } catch (SQLException ex){
                 LOG.error(ex.getMessage());
@@ -115,6 +121,13 @@ public class ProjectStaffDAO extends AbstractDAO<Integer, ProjectStaff>{
                 }
             }
         }
+        try {
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException ex){
+            LOG.error(ex.getMessage());
+        }
+        
         return (result>-1);
     }
 
