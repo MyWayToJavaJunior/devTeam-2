@@ -49,12 +49,6 @@ public class ElapsedTimeDAO {
             result = true;
         } catch (SQLException ex){
             LOG.error(ex.getMessage());
-//        } finally {
-//            try {
-//                if(ps!=null)  ps.close();
-//            } catch (SQLException ex) {
-//                LOG.error(ex.getMessage());
-//            }
         }
         daoManager.endConnectionScope();
         LOG.info("end Connection scope daoFactory");
@@ -62,7 +56,7 @@ public class ElapsedTimeDAO {
     }
     
     
-    //method getTotalElapsedTime(ProjectStaff)
+    
     public int getTotalElapsedTime(Staff worker, Project project){
         int result = -1;
         DAOFactory daoFactory = new DAOFactory();
@@ -95,15 +89,7 @@ public class ElapsedTimeDAO {
             for(StackTraceElement ste: ex.getStackTrace()){
                 LOG.debug(ste); 
             }
-//        } finally {
-//            try {
-//                if(ps!=null) ps.close();
-//            } catch (SQLException ex) {
-//                LOG.error(ex.getMessage() + ". StackTrace : ");
-//            for(StackTraceElement ste: ex.getStackTrace()){
-//                LOG.error(ste);
-//            }
-//            }
+
         }
         daoManager.endConnectionScope();
         LOG.info("end Connection scope daoFactory");

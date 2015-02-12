@@ -33,8 +33,6 @@ public class StaffDAO extends AbstractDAO<Integer, Staff>{
     
     
     public boolean isMember(String email, String password) {
-        //String email = worker.getEmail();
-        //String password = worker.getPassword();
         PreparedStatement ps = null;
         String sqlQuery = "SELECT * FROM Staff_auth WHERE email=? and password=?";
         try {
@@ -55,40 +53,7 @@ public class StaffDAO extends AbstractDAO<Integer, Staff>{
     }
 
 
-    /**
-     *
-     * @param email
-     * @return null, if we cannot execute query
-     */
-//    public Staff getStaffEntry(Staff worker) {
-//        if (!isMember(worker)) {
-//            //Ты неправильно используешь метод получения работника. 
-//            return null;
-//        }
-//        PreparedStatement ps = null;
-//        String sqlQuery = "SELECT S.idPerson, S.name, S.surname, S.qualification_id, S.isFree "
-//                + "FROM Staff as S, Staff_auth as Sa WHERE S.idPerson = Sa.staff_id  and Sa.email=?";
-//        ResultSet rs = null;
-//        try {
-//            ps = connection.prepareStatement(sqlQuery);
-//            ps.setString(1, worker.getEmail());
-//            rs = ps.executeQuery();
-//        } catch (SQLException ex) {
-//        }
-//        try {
-//            if (rs.next()) {
-//                worker.setId(rs.getInt("idPerson"));
-//                worker.setName(rs.getString("name"));
-//                worker.setSurname(rs.getString("surname"));
-//                worker.setIdQualification(rs.getInt("qualification_id"));
-//                worker.setIsFree(rs.getBoolean("isFree"));
-//            }
-//        } catch (SQLException ex) {
-//            LOG.error(ex.getMessage());
-//        }
-//        return worker;
-//    }
-    
+       
     public String getQualificationTitle(Staff worker) {
         PreparedStatement ps = null;
         String sqlQuery = "SELECT Q.title FROM  Qualification as Q, Staff as S "
@@ -183,6 +148,10 @@ public class StaffDAO extends AbstractDAO<Integer, Staff>{
     public List findAll() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    /**
+     * @return all workers, who want to enter to new projects
+     */
     public List<Staff> findAllFree(){
         PreparedStatement ps = null;
         String sqlQuery = "SELECT * FROM Staff WHERE isFree=true";

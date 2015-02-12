@@ -20,35 +20,18 @@ public class DAOFactory {
     private static final Logger LOG 
             = LogManager.getLogger(DAOFactory.class.getName());
     private static DataSource dataSource;
-//    Connection connection;
+
     
     static {
         try {
-            // Class.forName(driver);
             InitialContext context = new InitialContext();
             dataSource = (DataSource)context.lookup("java:comp/env/jdbc/devTeam");
-            
         } catch (NamingException ex) {
             LOG.error(ex.getMessage());
             throw new RuntimeException();
         }
     }
-    
-//    public void beginConnectionScope(){
-//        try {
-//        connection = dataSource.getConnection();
-//        } catch (SQLException ex){
-//            LOG.error(ex.getMessage());
-//        }
-//    }
-//    public void endConnectionScope(){
-//        try{
-//            if(connection!=null) connection.close();
-//        } catch (SQLException ex){
-//            LOG.error(ex.getMessage());
-//        }
-//    }
-    
+  
     public DAOManager getDaoManager(){
         LOG.info("new DaoManager was returned");
         try{
@@ -58,22 +41,4 @@ public class DAOFactory {
             return null;
         }
     }
-    
-//    public StaffDao getStaffDao() throws SQLException{
-//            return new StaffDao(dataSource.getConnection());
-//    }
-//    
-//    public CustomerDao getCustomerDao() throws SQLException{
-//        return new CustomerDao(dataSource.getConnection());
-//    }
-//
-//    public ProjectDao getProjectDao() throws SQLException {
-//        return new ProjectDao(dataSource.getConnection());
-//    }
-//    public ElapsedTimeDao getElapsedTimeDao() throws SQLException{
-//        return new ElapsedTimeDao(dataSource.getConnection());
-//    }
-//    public ProjectStaffDAO getProjectStaffDao() throws SQLException{
-//        return new ProjectStaffDAO(dataSource.getConnection());
-//    }
-}
+ }
