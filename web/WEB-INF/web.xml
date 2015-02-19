@@ -3,7 +3,12 @@
     <welcome-file-list>
         <welcome-file>index</welcome-file>
     </welcome-file-list>
-    
+    <jsp-config>
+    <taglib>
+        <taglib-uri>customtags</taglib-uri>
+        <taglib-location>/WEB-INF/tld/custom.tld</taglib-location>
+    </taglib>
+</jsp-config>
     <filter>
         <filter-name>EncondingFilter</filter-name>
         <filter-class>vsashyn.dt.filter.EncondingFilter</filter-class>

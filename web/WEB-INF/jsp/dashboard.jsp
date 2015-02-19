@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
 
 <fmt:setBundle basename="context"/>
 <html>
@@ -18,6 +19,7 @@
 
     <body>
         <div class='container'>           
+            
             <h1><fmt:message key="message.welcome"/></h1>
 
             <%-- Unauthorized persons are redirecting to login page  --%>
@@ -146,7 +148,8 @@
     <a href="index?command=logout">Logout</a>
     <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js'></script>
     <script src='js/bootstrap.js'></script>
-
+    <br><br>
+<ctg:powered-by/>
 </div>
 </body>
 </html>

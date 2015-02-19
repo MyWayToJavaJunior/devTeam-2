@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 public enum ResourceManager {
      INSTANCE;
      private ResourceBundle resourceBundle;
-     private final String resourceName = "content";
+     private final String resourceName = "context";
      private ResourceManager(){
          resourceBundle = ResourceBundle.getBundle(resourceName, Locale.getDefault());
      }
