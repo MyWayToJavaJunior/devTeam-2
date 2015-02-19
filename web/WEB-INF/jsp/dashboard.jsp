@@ -6,6 +6,9 @@
 <!DOCTYPE html>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setBundle basename="context"/>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -14,9 +17,8 @@
     </head>
 
     <body>
-
         <div class='container'>           
-            <h1>Welcome to dashboard!</h1>
+            <h1><fmt:message key="message.welcome"/></h1>
 
             <%-- Unauthorized persons are redirecting to login page  --%>
             <c:if test="${ empty worker }" var="unauthorized" scope="session">
@@ -41,21 +43,21 @@
             Welcome print
             ------------------------------------------------------------------%>
             <p>
-                Welcome, ${worker.name} !
+                <fmt:message key="message.greeting"/> ${worker.name} !
                 <br>
-                Role :   ${role}
+                <fmt:message key="label.worker_role"/>   ${role}
                 <br>
-                Worker id: ${worker.id}
+                <fmt:message key="label.id"/> ${worker.id}
                 <br>
-                Ready to get in new project : ${worker.isFree} . 
-                Change status to :
+                <fmt:message key="message.ready_to_get_new_project"/> ${worker.isFree} . 
+                <fmt:message key="message.change_status"/>
             <select name="status" form="changeInvolvement">
-                    <option value="true">True</option>
-                    <option value="false">False</option>
+                    <option value="true"><fmt:message key="label.true"/></option>
+                    <option value="false"><fmt:message key="label.false"/></option>
                 </select>
             <form id="changeInvolvement" action="changeInvolvement" method="POST">
                 <input type="hidden" name="command" value="changeInvolvement"/>
-                <input type="submit" name="changeStatus" value="Submit"/>
+                <input type="submit" name="changeStatus" value="<fmt:message key="label.submit"/>"/>
             </form>
         </p>
 
@@ -63,14 +65,14 @@
         <%------- Show all new spec for manager . MANAGER SPACE -----------------
          ------------------------------------------------------------------------%>
         <c:if test="${ isManager and worker.isFree }">
-           <h3> New projects, witch you can accept : </h3>
+           <h3> <fmt:message key="message.new_project_to_accept"/></h3>
 
         <table class="table table-hover">    
             <tr>
-                <td>Check for preparing</td>
-                <td>Title</td>
-                <td>Specification</td>
-                <td>Customer id</td>
+                <td> <fmt:message key="message.chech_for_preparing"/> </td>
+                <td> <fmt:message key="label.title"/>                 </td>
+                <td> <fmt:message key="label.spec"/>                  </td>
+                <td> <fmt:message key="label.customer_id"/>           </td>
             </tr>
             <form id="prepareProjectForm" action="prepareProject" method="POST" >
                 <c:forEach var="elem" items="${requestScope.specificationsNew}" varStatus="status" >
@@ -83,7 +85,7 @@
                 </c:forEach>
         </table>
             <input type="hidden" name="command" value="prepareProject"/>
-            <input type="submit" name="submitProject" value="Begin prepare new Project"/>
+            <input type="submit" name="submitProject" value="<fmt:message key="message.begin_prepare_project"/>"/>
             </form>
         
         </c:if>
@@ -93,16 +95,15 @@
 
         
     <p>
-            <h3>  Projects in which you are involved: </h3>
+            <h3> <fmt:message key="message.project_can_involved"/></h3>
                 <table class="table table-hover">
                     <tr> 
-                        <td>id</td>
-                        <td>Title</td>
-                        <td>Total elapsed time</td>
+                        <td><fmt:message key="label.id"/></td>
+                        <td><fmt:message key="label.title"/></td>
+                        <td><fmt:message key="label.total_elapsed_time"/></td>
                         <c:if test="${isManager}"> 
-                               <td>Bill</td>
+                               <td><fmt:message key="label.bill"/></td>
                         </c:if>
-                     
                      </tr>
                     <c:forEach var="elem" items="${projectsTimes}" varStatus="status">
                         <tr>        
@@ -124,19 +125,19 @@
     Adding elapsed time 
     ---------------------------------------------------------------------%>
     <p>
-        <strong> Please, add elapsed time to project : </strong>
+        <strong><fmt:message key="message.add_elapsed_time"/></strong>
         <select name="witchProject" form="elapsedTimes">
             <c:forEach var="elem" items="${projectsTimes}" varStatus="status">
                 <option value="${elem.key.id}">
-                    Title: ${elem.key.title} 
+                    <fmt:message key="label.title"/> ${elem.key.title} 
                 </option>
             </c:forEach>
         </select> 
-        in minutes :
+      <fmt:message key="message.in_minutes"/>
     <form id="elapsedTimes" action="addtime" method="POST">
         <input type="hidden" name="command" value="addElapsedTime"/>
         <input type="text" name="elapsedTime" required autofocus/>
-        <input type="submit" name="changeTime" value ="Submit"/>
+        <input type="submit" name="changeTime" value ="<fmt:message key="label.submit"/>"/>
     </form>
 </p>
 
